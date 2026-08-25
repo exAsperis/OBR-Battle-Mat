@@ -35,17 +35,12 @@ export default function App() {
     setBusy(true); setActionError(null);
     try {
       if (!(await OBR.scene.isReady())) throw new Error("Open a scene before testing a local image.");
+      const selectedImage = config?.image;
+      const selectedGrid = config?.grid;
+      if (!selectedImage || !selectedGrid) throw new Error("Choose an image before testing a local image.");
       const [width, height] = await Promise.all([OBR.viewport.getWidth(), OBR.viewport.getHeight()]);
       const center = await OBR.viewport.inverseTransformPoint({ x: width / 2, y: height / 2 });
-      const image = buildImage(
-        {
-          width: 300,
-          height: 300,
-          url: "https://www.gstatic.com/webp/gallery/1.png",
-          mime: "image/png",
-        },
-        { dpi: 300, offset: { x: 150, y: 150 } },
-      )
+      const image = buildImage(selectedImage, selectedGrid)
         .position(center)
         .scale({ x: 1, y: 1 })
         .layer("CHARACTER")
@@ -84,8 +79,8 @@ export default function App() {
       </section>
       <section className="panel">
         <div className="section-heading"><div><p className="eyebrow">Temporary diagnostic</p><h2>Local image test</h2></div></div>
-        <p className="hint">Adds one interactive image at the center of this viewport.</p>
-        <button className="primary" disabled={busy} onClick={() => void testLocalImage()}>Add local image</button>
+        <p className="hint">Adds the selected image as one interactive item at the center of this viewport.</p>
+        <button className="primary" disabled={busy || !configured} onClick={() => void testLocalImage()}>Add selected image</button>
       </section>
       <section className="panel">
         <div className="section-heading"><div><p className="eyebrow">Local performance</p><h2>This device</h2></div><span className="tile-count">{tileCount} tiles</span></div>
