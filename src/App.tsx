@@ -5,6 +5,7 @@ import { backgroundMetadata, configFromImage, EMPTY_BACKGROUND_CONFIG } from "./
 import { RENDER_DISTANCE_EVENT, RENDER_DISTANCE_KEY } from "./constants";
 import { useOwlbear } from "./hooks/useOwlbear";
 import type { BackgroundConfigV1, RenderDistance } from "./types";
+import { RELEASE_VERSION } from "./version";
 
 export default function App() {
   const { status, role, sceneReady, config, error, refresh } = useOwlbear();
@@ -57,5 +58,6 @@ export default function App() {
         <p className="hint">Render distance affects only this device. Lower settings use fewer local image tiles; zoom never adds more.</p>
       </section>
     </>}
+    <footer className="version-footer">OBR Battle Mat v{RELEASE_VERSION}</footer>
   </main>;
 }

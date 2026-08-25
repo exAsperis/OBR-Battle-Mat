@@ -44,5 +44,6 @@ button, input { font: inherit; } button { border: 0; cursor: pointer; } button:d
 .scene-icon { margin-bottom: 8px; color: #ad84fa; font-size: 30px; }
 .center-state { min-height: 100vh; display: grid; place-content: center; gap: 9px; padding: 25px; } .center-state button { margin-top: 5px; }
 .spinner { width: 25px; height: 25px; margin: auto; border: 3px solid rgba(255,255,255,.14); border-top-color: #a778ff; border-radius: 50%; animation: spin .8s linear infinite; }
+.version-footer { padding: 1px 0 3px; color: var(--obr-text-secondary, #aaa1b8); font-size: 10px; text-align: center; opacity: .72; }
 @keyframes spin { to { transform: rotate(360deg); } }
 @media (max-width: 360px) { .app-shell { padding: 12px; } .segmented label { font-size: 9px; } }
