@@ -45,8 +45,8 @@ The pure pool tests verify bounded preset sizes, fixed logical coordinates, long
 After GitHub Pages deployment, add either manifest URL to Owlbear Rodeo:
 
 ```text
-https://exasperis.github.io/OBR-Battle-Mat/manifest.json
-https://exasperis.github.io/OBR-Battle-Mat/manifest-v0.1.4.json
+https://obr-battle-mat.ex-asperis.com/manifest.json
+https://obr-battle-mat.ex-asperis.com/manifest-v0.1.5.json
 ```
 
 Published by **es Asperis**.
