@@ -130,7 +130,12 @@ export class TiledBackgroundRenderer {
   private buildTile(position: Vector2): Image {
     const config = this.config;
     if (!config?.image || !config.grid) throw new Error("Cannot build a tile without an image.");
-    return buildImage(config.image, config.grid)
+    return buildImage({
+      width: config.image.width,
+      height: config.image.height,
+      mime: config.image.mime,
+      url: config.image.url,
+    }, config.grid)
       .name(`Battle Mat · ${config.image.name ?? "Background"}`)
       .position(position)
       .scale(config.scale)
