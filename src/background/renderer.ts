@@ -134,6 +134,7 @@ export class TiledBackgroundRenderer {
       .name(`Battle Mat · ${config.image.name ?? "Background"}`)
       .position(position)
       .scale(config.scale)
+      .visible(true)
       .layer("MAP")
       .zIndex(BACKGROUND_Z_INDEX)
       .locked(true)
