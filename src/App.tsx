@@ -1,4 +1,4 @@
-import OBR from "@owlbear-rodeo/sdk";
+import OBR, { buildImage } from "@owlbear-rodeo/sdk";
 import { useEffect, useState } from "react";
 import { getRenderDistance, poolSizeForRadius, radiusForRenderDistance, RENDER_DISTANCE_OPTIONS, setRenderDistance } from "./config/localSettings";
 import { backgroundMetadata, configFromImage, EMPTY_BACKGROUND_CONFIG } from "./config/sceneConfig";
@@ -31,6 +31,36 @@ export default function App() {
     const images = await OBR.assets.downloadImages(false, config?.image?.name, "MAP");
     if (images.length) await OBR.scene.setMetadata(backgroundMetadata(configFromImage(images[0])));
   });
+  const testLocalImage = async () => {
+    setBusy(true); setActionError(null);
+    try {
+      if (!(await OBR.scene.isReady())) throw new Error("Open a scene before testing a local image.");
+      const [width, height] = await Promise.all([OBR.viewport.getWidth(), OBR.viewport.getHeight()]);
+      const center = await OBR.viewport.inverseTransformPoint({ x: width / 2, y: height / 2 });
+      const image = buildImage(
+        {
+          width: 300,
+          height: 300,
+          url: "https://upload.wikimedia.org/wikipedia/commons/3/3f/PNG_icon.png",
+          mime: "image/png",
+        },
+        { dpi: 300, offset: { x: 150, y: 150 } },
+      )
+        .position(center)
+        .scale({ x: 1, y: 1 })
+        .layer("CHARACTER")
+        .visible(true)
+        .locked(false)
+        .name("LOCAL IMAGE TEST")
+        .build();
+      console.log("About to add local image:", image);
+      await OBR.scene.local.addItems([image]);
+      const locals = await OBR.scene.local.getItems();
+      console.log("Local items after add:", locals);
+    } catch (cause) {
+      setActionError(cause instanceof Error ? cause.message : "The local image test failed.");
+    } finally { setBusy(false); }
+  };
   const updateConfig = (next: BackgroundConfigV1) => runGmAction(() => OBR.scene.setMetadata(backgroundMetadata(next)));
   const changeDistance = (value: RenderDistance) => { setRenderDistance(value); setDistanceState(value); };
   if (status === "connecting") return <main className="center-state"><div className="spinner" /><p>Connecting to Owlbear Rodeo…</p></main>;
@@ -51,6 +81,11 @@ export default function App() {
           <div className="button-row"><button className="primary" disabled={busy} onClick={() => void chooseImage()}>{busy ? "Working…" : configured ? "Replace image" : "Choose image"}</button>{configured && <button className="danger" disabled={busy} onClick={() => void updateConfig(EMPTY_BACKGROUND_CONFIG)}>Clear</button>}</div>
         </div> : <p className="player-note">{config?.enabled ? "The GM has enabled a repeating background for this scene." : "No repeating background is enabled for this scene."}</p>}
         {actionError && <p className="error-notice" role="alert">{actionError}</p>}
+      </section>
+      <section className="panel">
+        <div className="section-heading"><div><p className="eyebrow">Temporary diagnostic</p><h2>Local image test</h2></div></div>
+        <p className="hint">Adds one interactive image at the center of this viewport.</p>
+        <button className="primary" disabled={busy} onClick={() => void testLocalImage()}>Add local image</button>
       </section>
       <section className="panel">
         <div className="section-heading"><div><p className="eyebrow">Local performance</p><h2>This device</h2></div><span className="tile-count">{tileCount} tiles</span></div>
