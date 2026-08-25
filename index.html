@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#17141f" />
+    <meta name="description" content="A bounded, world-anchored repeating background for Owlbear Rodeo scenes." />
+    <link rel="icon" href="./icon.svg" />
+    <link rel="stylesheet" href="/src/showcase.css" />
+    <title>OBR Battle Mat · Repeating scene backgrounds</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="OBR Battle Mat home"><img src="./icon.svg" alt="" width="34" height="34" /><span>OBR Battle Mat</span></a>
+      <a class="header-link" href="https://github.com/exAsperis/OBR-Battle-Mat">View on GitHub</a>
+    </header>
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Owlbear Rodeo extension</p>
+          <h1>A battle mat that keeps going.</h1>
+          <p class="lede">Choose one map image and repeat it beneath the whole scene. The pattern stays fixed in world space while each device controls its own bounded rendering cost.</p>
+          <div class="actions"><a class="button primary" href="./manifest.json">Stable manifest</a><a class="button secondary" href="https://github.com/exAsperis/OBR-Battle-Mat#readme">Setup guide</a></div>
+        </div>
+        <aside class="preview" aria-label="Battle Mat behavior">
+          <div class="preview-bar"><span></span><span></span><span></span></div>
+          <div class="preview-body"><p class="mini-label">World-anchored tile pool</p><h2>Seamless by design.</h2><div class="feature-grid"><div><strong>81</strong><span>Default local tiles</span></div><div><strong>0</strong><span>Synced tile items</span></div><div><strong>Fixed</strong><span>World alignment</span></div><div><strong>GM</strong><span>Scene control</span></div></div></div>
+        </aside>
+      </section>
+      <section class="section" aria-labelledby="features-heading">
+        <p class="eyebrow">Predictable performance</p><h2 id="features-heading">The scene owns the image. Each device owns the cost.</h2>
+        <div class="cards"><article><span>01</span><h3>Shared configuration</h3><p>The GM chooses the scene background once; scene metadata carries it to current clients and late joiners.</p></article><article><span>02</span><h3>Local rendering</h3><p>Unselectable local image tiles sit beneath maps and never inflate the synchronized scene object count.</p></article><article><span>03</span><h3>Strictly bounded</h3><p>Off through Extreme presets cap the pool. Panning recycles it, and zooming out never creates more tiles.</p></article></div>
+      </section>
+    </main>
+    <footer class="site-footer"><p>OBR Battle Mat · Built by es Asperis</p></footer>
+  </body>
+</html>
