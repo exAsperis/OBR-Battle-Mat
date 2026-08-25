@@ -41,7 +41,7 @@ export default function App() {
         {
           width: 300,
           height: 300,
-          url: "https://upload.wikimedia.org/wikipedia/commons/3/3f/PNG_icon.png",
+          url: "https://www.gstatic.com/webp/gallery/1.png",
           mime: "image/png",
         },
         { dpi: 300, offset: { x: 150, y: 150 } },
