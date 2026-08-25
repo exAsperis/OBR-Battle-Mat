@@ -5,6 +5,7 @@ import type { BackgroundConfigV1, RendererDebugState, TileAssignment } from "../
 import { recycleAssignments } from "./pool";
 
 const TILE_TAG = { version: 1 };
+const ADD_BATCH_SIZE = 40;
 
 function isOwnedTile(item: Item): boolean {
   const tag = item.metadata[LOCAL_TILE_KEY];
@@ -146,7 +147,9 @@ export class TiledBackgroundRenderer {
     if (!this.config || generation !== this.generation) return;
     if (this.itemIds.length < target) {
       const additions = Array.from({ length: target - this.itemIds.length }, () => this.buildTile(this.config!.origin));
-      await OBR.scene.local.addItems(additions);
+      for (let index = 0; index < additions.length; index += ADD_BATCH_SIZE) {
+        await OBR.scene.local.addItems(additions.slice(index, index + ADD_BATCH_SIZE));
+      }
       if (generation !== this.generation) {
         await OBR.scene.local.deleteItems(additions.map((item) => item.id));
         return;
@@ -180,7 +183,7 @@ export class TiledBackgroundRenderer {
           const position = positions.get(draft.id);
           if (position) draft.position = position;
         }
-      }, true);
+      });
     }
     this.assignments = next;
     this.centerTileX = tileX;

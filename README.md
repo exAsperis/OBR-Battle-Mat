@@ -46,7 +46,7 @@ After GitHub Pages deployment, add either manifest URL to Owlbear Rodeo:
 
 ```text
 https://obr-battle-mat.ex-asperis.com/manifest.json
-https://obr-battle-mat.ex-asperis.com/manifest-v0.1.5.json
+https://obr-battle-mat.ex-asperis.com/manifest-v0.1.6.json
 ```
 
 Published by **es Asperis**.

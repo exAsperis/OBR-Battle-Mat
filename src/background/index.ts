@@ -12,8 +12,10 @@ let pollCount = 0;
 let operation = Promise.resolve();
 
 function enqueue(task: () => Promise<void>): void {
-  operation = operation.then(task, task).catch(() => {
-    // A later metadata/readiness event retries from authoritative state.
+  operation = operation.then(task, task).catch((cause) => {
+    currentConfigFingerprint = "";
+    currentRadius = -1;
+    console.error("[OBR Battle Mat] Background renderer operation failed.", cause);
   });
 }
 
@@ -63,6 +65,10 @@ OBR.onReady(() => {
     if (event.key === RENDER_DISTANCE_KEY) enqueue(() => synchronize());
   });
   window.addEventListener(RENDER_DISTANCE_EVENT, () => enqueue(() => synchronize()));
-  window.setInterval(() => void pollViewport(), VIEWPORT_POLL_INTERVAL_MS);
+  window.setInterval(() => {
+    void pollViewport().catch((cause) => {
+      console.error("[OBR Battle Mat] Viewport update failed.", cause);
+    });
+  }, VIEWPORT_POLL_INTERVAL_MS);
   enqueue(() => synchronize());
 });
