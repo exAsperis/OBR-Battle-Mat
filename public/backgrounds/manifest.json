@@ -37,6 +37,13 @@
       "rows": 16
     },
     {
+      "id": "fractal-sepia",
+      "name": "Fractal (sepia)",
+      "file": "Fractal 16x16.png",
+      "columns": 16,
+      "rows": 16
+    },
+    {
       "id": "grassland",
       "name": "Grassland",
       "file": "Grasslands.png",
