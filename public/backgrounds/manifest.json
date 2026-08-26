@@ -114,6 +114,13 @@
       "rows": 6
     },
     {
+      "id": "sand-ripples",
+      "name": "Sand ripples",
+      "file": "Sand ripples 16x16.png",
+      "columns": 16,
+      "rows": 16
+    },
+    {
       "id": "savanna",
       "name": "Savanna",
       "file": "Savanna 16x16.png",
