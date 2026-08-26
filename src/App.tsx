@@ -1,5 +1,7 @@
 import OBR from "@owlbear-rodeo/sdk";
 import { useEffect, useState } from "react";
+import { BuiltInGallery } from "./components/BuiltInGallery";
+import { configFromBuiltIn, loadImageDimensions, type BuiltInBackground } from "./config/builtInBackgrounds";
 import { getRenderDistance, poolSizeForRadius, radiusForRenderDistance, RENDER_DISTANCE_OPTIONS, setRenderDistance } from "./config/localSettings";
 import { backgroundMetadata, configFromImage, EMPTY_BACKGROUND_CONFIG } from "./config/sceneConfig";
 import { RENDER_DISTANCE_EVENT, RENDER_DISTANCE_KEY } from "./constants";
@@ -12,6 +14,7 @@ export default function App() {
   const [distance, setDistanceState] = useState<RenderDistance>(() => getRenderDistance());
   const [busy, setBusy] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
+  const [showBuiltIns, setShowBuiltIns] = useState(false);
   useEffect(() => {
     const update = () => setDistanceState(getRenderDistance());
     const storage = (event: StorageEvent) => { if (event.key === RENDER_DISTANCE_KEY) update(); };
@@ -31,6 +34,11 @@ export default function App() {
     const images = await OBR.assets.downloadImages(false, undefined, "MAP");
     if (images.length) await OBR.scene.setMetadata(backgroundMetadata(configFromImage(images[0])));
   });
+  const chooseBuiltIn = (background: BuiltInBackground) => runGmAction(async () => {
+    const [dimensions, sceneDpi] = await Promise.all([loadImageDimensions(background.url), OBR.scene.grid.getDpi()]);
+    await OBR.scene.setMetadata(backgroundMetadata(configFromBuiltIn(background, dimensions, sceneDpi)));
+    setShowBuiltIns(false);
+  });
   const updateConfig = (next: BackgroundConfigV1) => runGmAction(() => OBR.scene.setMetadata(backgroundMetadata(next)));
   const changeDistance = (value: RenderDistance) => { setRenderDistance(value); setDistanceState(value); };
   if (status === "connecting") return <main className="center-state"><div className="spinner" /><p>Connecting to Owlbear Rodeo…</p></main>;
@@ -41,15 +49,18 @@ export default function App() {
     <header className="app-header"><img className="app-mark" src="/icon.svg" alt="" /><h1>Battle Mat</h1><span className={`status-pill ${config?.enabled ? "active" : ""}`}>{config?.enabled ? "Active" : "Inactive"}</span></header>
     {!sceneReady ? <section className="empty-card"><div className="scene-icon">◇</div><h2>No scene open</h2><p>Open a scene to configure its repeating background.</p></section> : <>
       <section className="panel">
-        <div className="section-heading"><div><p className="eyebrow">Shared with everyone</p><h2>Scene background</h2></div>{role !== "GM" && <span className="role-chip">GM controlled</span>}</div>
-        <button type="button" className={`image-card ${configured ? "configured" : ""}`} disabled={role !== "GM" || busy} onClick={() => void chooseImage()}>
+        <div className="section-heading"><div><p className="eyebrow">Shared with everyone</p><h2>{showBuiltIns ? "Built-in backgrounds" : "Scene background"}</h2></div>{role !== "GM" && <span className="role-chip">GM controlled</span>}</div>
+        {showBuiltIns && role === "GM" ? <BuiltInGallery busy={busy} onBack={() => setShowBuiltIns(false)} onSelect={(background) => void chooseBuiltIn(background)} /> : <>
+        <div className={`image-card ${configured ? "configured" : ""}`}>
           {configured ? <><div className="thumbnail" style={{ backgroundImage: `url(${config!.image!.url})` }} role="img" aria-label="Current background preview" /><div className="image-details"><strong>{config!.image!.name || "Selected image"}</strong><span>{config!.image!.width} × {config!.image!.height}px</span></div></>
-            : <div className="image-placeholder"><span>＋</span><div><strong>No image selected</strong><small>Choose a map asset to repeat</small></div></div>}
-        </button>
+            : <div className="image-placeholder"><span>＋</span><div><strong>No image selected</strong><small>Choose a background to repeat</small></div></div>}
+        </div>
         {role === "GM" ? <div className="gm-controls">
           <label className="toggle-row"><span><strong>Enabled</strong><small>Show this background to all players</small></span><input type="checkbox" checked={Boolean(config?.enabled)} disabled={!configured || busy} onChange={(event) => config && void updateConfig({ ...config, enabled: event.target.checked })} /></label>
-          <div className="button-row"><button className="primary" disabled={busy} onClick={() => void chooseImage()}>{busy ? "Working…" : configured ? "Replace image" : "Choose image"}</button>{configured && <button className="danger" disabled={busy} onClick={() => void updateConfig(EMPTY_BACKGROUND_CONFIG)}>Clear</button>}</div>
+          <div className="source-buttons"><button className="primary" disabled={busy} onClick={() => { setActionError(null); setShowBuiltIns(true); }}>Built-in backgrounds</button><button className="secondary" disabled={busy} onClick={() => void chooseImage()}>My OBR maps</button></div>
+          {configured && <div className="button-row"><button className="danger" disabled={busy} onClick={() => void updateConfig(EMPTY_BACKGROUND_CONFIG)}>Clear background</button></div>}
         </div> : <p className="player-note">{config?.enabled ? "The GM has enabled a repeating background for this scene." : "No repeating background is enabled for this scene."}</p>}
+        </>}
         {actionError && <p className="error-notice" role="alert">{actionError}</p>}
       </section>
       <section className="panel">

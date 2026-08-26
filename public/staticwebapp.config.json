@@ -1,5 +1,13 @@
 {
   "globalHeaders": {
     "Access-Control-Allow-Origin": "https://www.owlbear.rodeo"
-  }
+  },
+  "routes": [
+    {
+      "route": "/backgrounds/manifest.json",
+      "headers": {
+        "Cache-Control": "no-store, no-cache, must-revalidate"
+      }
+    }
+  ]
 }

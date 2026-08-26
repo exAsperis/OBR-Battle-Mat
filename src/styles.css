@@ -14,7 +14,7 @@ button, input { font: inherit; } button { border: 0; cursor: pointer; } button:d
 .section-heading { display: flex; align-items: center; gap: 10px; margin-bottom: 13px; }
 .section-heading h2, .empty-card h2 { margin: 2px 0 0; font-size: 15px; }
 .role-chip { margin-left: auto; } .tile-count { color: var(--obr-text-primary, #f5f1ff); text-transform: none; letter-spacing: 0; }
-.image-card { width: 100%; min-height: 84px; display: flex; align-items: center; overflow: hidden; border: 1px dashed var(--obr-border, rgba(255,255,255,.15)); border-radius: 11px; background: rgba(0,0,0,.12); color: inherit; font: inherit; text-align: left; }
+.image-card { width: 100%; min-height: 84px; display: flex; align-items: center; overflow: hidden; border: 1px dashed var(--obr-border, rgba(255,255,255,.15)); border-radius: 11px; background: rgba(0,0,0,.12); color: inherit; text-align: left; }
 .image-card.configured { border-style: solid; }
 .thumbnail { align-self: stretch; width: 92px; flex: 0 0 auto; background-position: center; background-size: cover; box-shadow: inset -1px 0 rgba(255,255,255,.08); }
 .image-details { min-width: 0; display: grid; gap: 5px; padding: 13px; }
@@ -28,10 +28,23 @@ button, input { font: inherit; } button { border: 0; cursor: pointer; } button:d
 .toggle-row input { appearance: none; width: 39px; height: 22px; padding: 2px; border-radius: 99px; background: #4b4555; transition: .18s; }
 .toggle-row input::after { content: ""; display: block; width: 18px; height: 18px; border-radius: 50%; background: white; box-shadow: 0 1px 4px rgba(0,0,0,.35); transition: .18s; }
 .toggle-row input:checked { background: #8057d2; } .toggle-row input:checked::after { transform: translateX(17px); }
-.button-row { display: flex; gap: 8px; }
-.button-row button, .center-state button { min-height: 36px; padding: 0 14px; border-radius: 9px; font-size: 12px; font-weight: 750; }
-.button-row .primary, .center-state button { flex: 1; color: white; background: linear-gradient(135deg, #8a5ee0, #6842b6); box-shadow: 0 5px 15px rgba(82,45,151,.25); }
+.button-row, .source-buttons, .gallery-toolbar { display: flex; gap: 8px; }
+.button-row button, .source-buttons button, .gallery-toolbar button, .gallery-state button, .center-state button { min-height: 36px; padding: 0 14px; border-radius: 9px; font-size: 12px; font-weight: 750; }
+.primary, .center-state button { flex: 1; color: white; background: linear-gradient(135deg, #8a5ee0, #6842b6); box-shadow: 0 5px 15px rgba(82,45,151,.25); }
+.secondary { color: var(--obr-text-primary, #f5f1ff); border: 1px solid var(--obr-border, rgba(255,255,255,.15)); background: rgba(255,255,255,.055); }
+.source-buttons button { flex: 1; }
 .button-row .danger { color: #ffaaa8; border: 1px solid rgba(255,120,116,.22); background: rgba(185,53,49,.1); }
+.gallery-toolbar { justify-content: space-between; margin-bottom: 12px; }
+.gallery-state { min-height: 150px; display: grid; place-content: center; justify-items: center; gap: 10px; text-align: center; }
+.gallery-state p { margin: 0; color: var(--obr-text-secondary, #aaa1b8); font-size: 12px; line-height: 1.5; }
+.gallery-state .error-notice { color: #ffc0bd; }
+.background-gallery { max-height: 390px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; overflow-y: auto; }
+.background-option { min-width: 0; padding: 0; overflow: hidden; border: 1px solid var(--obr-border, rgba(255,255,255,.13)); border-radius: 10px; color: inherit; background: rgba(0,0,0,.13); text-align: left; }
+.background-option:hover { border-color: rgba(163,118,243,.55); background: rgba(125,82,210,.11); }
+.background-preview { display: block; aspect-ratio: 16 / 9; background-position: center; background-size: cover; }
+.background-option-details { display: grid; gap: 3px; padding: 9px 10px; }
+.background-option-details strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; }
+.background-option-details small { color: var(--obr-text-secondary, #aaa1b8); font-size: 10px; }
 .distance-control { margin: 0; padding: 0; border: 0; } .distance-control legend { margin-bottom: 8px; color: var(--obr-text-secondary, #aaa1b8); font-size: 11px; }
 .segmented { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; padding: 3px; border-radius: 10px; background: rgba(0,0,0,.2); }
 .segmented label { min-width: 0; padding: 8px 2px; border-radius: 7px; color: var(--obr-text-secondary, #aaa1b8); text-align: center; font-size: 10px; font-weight: 700; cursor: pointer; }
