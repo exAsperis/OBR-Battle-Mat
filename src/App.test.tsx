@@ -23,6 +23,7 @@ vi.mock("@owlbear-rodeo/sdk", () => ({
   },
 }));
 vi.mock("./hooks/useOwlbear", () => ({ useOwlbear: vi.fn() }));
+vi.mock("./hooks/useActionHeight", () => ({ useActionHeight: vi.fn() }));
 vi.mock("./components/BuiltInGallery", () => ({
   BuiltInGallery: ({ onBack }: { onBack: () => void }) => <div><span>Built-in gallery</span><button onClick={onBack}>Back</button></div>,
 }));

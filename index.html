@@ -19,8 +19,10 @@
         <div class="hero-copy">
           <p class="eyebrow">Owlbear Rodeo extension</p>
           <h1>A battle mat that keeps going.</h1>
-          <p class="lede">Choose one map image and repeat it beneath the whole scene. The pattern stays fixed in world space while each device controls its own bounded rendering cost.</p>
-          <div class="actions"><a class="button primary" href="./manifest.json">Stable manifest</a><a class="button secondary" href="https://github.com/exAsperis/OBR-Battle-Mat#readme">Setup guide</a></div>
+          <p class="lede">Choose one map image and repeat it beneath the whole scene. The pattern stays fixed in world space beneath your scene.</p>
+          <div class="actions"><button class="button primary" id="copy-manifest" type="button" data-manifest-url="https://obr-battle-mat.ex-asperis.com/manifest.json">Copy manifest</button><a class="button secondary" href="https://github.com/exAsperis/OBR-Battle-Mat#readme">Setup guide</a></div>
+          <p class="install-instruction">Paste the copied URL into Owlbear Rodeo’s <strong>Add Extension</strong> dialog.</p>
+          <p class="copy-status" id="copy-status" role="status" aria-live="polite"></p>
         </div>
         <aside class="preview" aria-label="Battle Mat behavior">
           <div class="preview-bar"><span></span><span></span><span></span></div>
@@ -28,10 +30,11 @@
         </aside>
       </section>
       <section class="section" aria-labelledby="features-heading">
-        <p class="eyebrow">Predictable performance</p><h2 id="features-heading">The scene owns the image. Each device owns the cost.</h2>
-        <div class="cards"><article><span>01</span><h3>Shared configuration</h3><p>The GM chooses the scene background once; scene metadata carries it to current clients and late joiners.</p></article><article><span>02</span><h3>Local rendering</h3><p>Unselectable local image tiles sit beneath maps and never inflate the synchronized scene object count.</p></article><article><span>03</span><h3>Strictly bounded</h3><p>Off through Extreme presets cap the pool. Panning recycles it, and zooming out never creates more tiles.</p></article></div>
+        <p class="eyebrow">Predictable performance</p><h2 id="features-heading">User-selectable render distances means that each device renders images out to a comfortable radius for that device.</h2>
+        <div class="cards"><article><span>01</span><h3>Shared configuration</h3><p>The GM chooses the scene background once; scene metadata carries it to current clients and late joiners.</p></article><article><span>02</span><h3>Local rendering</h3><p>Unselectable local image tiles sit beneath maps and never inflate the synchronized scene object count.</p></article><article><span>03</span><h3>Strictly bounded</h3><p>"Off" through "Extreme" presets cap the pool of rendered tiles. Panning recycles tiles, and zooming out never creates more tiles.</p></article></div>
       </section>
     </main>
-    <footer class="site-footer"><p>OBR Battle Mat · Built by es Asperis</p></footer>
+    <footer class="site-footer"><p>OBR Battle Mat · Built by ex Asperis</p></footer>
+    <script type="module" src="/src/showcase.ts"></script>
   </body>
 </html>

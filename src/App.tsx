@@ -5,11 +5,13 @@ import { configFromBuiltIn, loadImageDimensions, type BuiltInBackground } from "
 import { getRenderDistance, poolSizeForRadius, radiusForRenderDistance, RENDER_DISTANCE_OPTIONS, setRenderDistance } from "./config/localSettings";
 import { backgroundMetadata, configFromImage, EMPTY_BACKGROUND_CONFIG } from "./config/sceneConfig";
 import { RENDER_DISTANCE_EVENT, RENDER_DISTANCE_KEY } from "./constants";
+import { useActionHeight } from "./hooks/useActionHeight";
 import { useOwlbear } from "./hooks/useOwlbear";
 import type { BackgroundConfigV1, RenderDistance } from "./types";
 import { RELEASE_VERSION } from "./version";
 
 export default function App() {
+  useActionHeight();
   const { status, role, sceneReady, config, error, refresh } = useOwlbear();
   const [distance, setDistanceState] = useState<RenderDistance>(() => getRenderDistance());
   const [busy, setBusy] = useState(false);
