@@ -3,7 +3,7 @@
   "version": "0.1.6",
   "manifest_version": 1,
   "description": "A world-anchored, repeating scene background with a per-device render distance.",
-  "author": "es Asperis",
+  "author": "ex Asperis",
   "homepage_url": "https://github.com/exAsperis/OBR-Battle-Mat",
   "icon": "https://obr-battle-mat.ex-asperis.com/icon.svg?v=0.1.6",
   "background_url": "https://obr-battle-mat.ex-asperis.com/background.html?v=0.1.6",

@@ -20,9 +20,9 @@ const failures = [];
 if (extensionId !== expectedId) failures.push(`EXTENSION_ID must be ${expectedId}, received ${extensionId}`);
 if (packageJson.name !== slug) failures.push(`package.json name must be ${slug}, received ${packageJson.name}`);
 if (manifest.name !== extensionName) failures.push(`manifest name must be ${extensionName}, received ${manifest.name}`);
-if (manifest.author !== "es Asperis") failures.push(`manifest author must be es Asperis, received ${String(manifest.author)}`);
+if (manifest.author !== "ex Asperis") failures.push(`manifest author must be ex Asperis, received ${String(manifest.author)}`);
 if (localManifest.name !== `${extensionName} (Local)`) failures.push(`local manifest name must be ${extensionName} (Local), received ${localManifest.name}`);
-if (localManifest.author !== "es Asperis") failures.push(`local manifest author must be es Asperis, received ${String(localManifest.author)}`);
+if (localManifest.author !== "ex Asperis") failures.push(`local manifest author must be ex Asperis, received ${String(localManifest.author)}`);
 if (localManifest.action?.title !== `${extensionName} (Local)`) failures.push(`local manifest action title must be ${extensionName} (Local), received ${String(localManifest.action?.title)}`);
 if (localManifest.action?.popover !== "http://localhost:5173/extension.html") failures.push(`local manifest popover must be http://localhost:5173/extension.html, received ${String(localManifest.action?.popover)}`);
 if (staticWebApp.globalHeaders?.["Access-Control-Allow-Origin"] !== "https://www.owlbear.rodeo") failures.push("Azure Static Web Apps must allow the Owlbear Rodeo origin");
@@ -30,7 +30,7 @@ if (staticWebApp.globalHeaders?.["Access-Control-Allow-Origin"] !== "https://www
 try {
   const storeSource = await readFile("public/store.md", "utf8");
   const storeAuthor = storeSource.match(/^author:\s*["']?([^"'\r\n]+)["']?\s*$/m)?.[1]?.trim();
-  if (storeAuthor !== "es Asperis") failures.push(`public/store.md author must be es Asperis, received ${String(storeAuthor)}`);
+  if (storeAuthor !== "ex Asperis") failures.push(`public/store.md author must be ex Asperis, received ${String(storeAuthor)}`);
 } catch (cause) {
   if (cause?.code !== "ENOENT") throw cause;
 }
@@ -41,4 +41,4 @@ if (unexpectedIds.length) failures.push(`unexpected namespace identifiers in src
 
 if (failures.length) throw new Error(`Project identity check failed:\n- ${failures.join("\n- ")}`);
 
-console.log(`Project identity verified: ${extensionId}; published author es Asperis.`);
+console.log(`Project identity verified: ${extensionId}; published author ex Asperis.`);

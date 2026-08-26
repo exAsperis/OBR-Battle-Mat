@@ -58,6 +58,13 @@
       "rows": 16
     },
     {
+      "id": "marble-tiles",
+      "name": "Marble tiles",
+      "file": "Marble tiles 12x12.png",
+      "columns": 12,
+      "rows": 12
+    },
+    {
       "id": "martian-surface",
       "name": "Martian surface",
       "file": "Martian surface 16x16.png",

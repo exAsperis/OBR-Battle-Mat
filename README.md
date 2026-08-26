@@ -70,4 +70,4 @@ https://obr-battle-mat.ex-asperis.com/manifest.json
 https://obr-battle-mat.ex-asperis.com/manifest-v0.2.0.json
 ```
 
-Published by **es Asperis**.
+Published by **ex Asperis**.
