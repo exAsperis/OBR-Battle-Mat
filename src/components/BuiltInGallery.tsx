@@ -63,7 +63,8 @@ export function BuiltInGallery({ busy, onBack, onSelect }: BuiltInGalleryProps) 
               <span className="background-preview"><img src={image.url} alt="" loading="lazy" decoding="async" /></span>
               <span className="background-option-details">
                 {image.ai && <span className="ai-glyph" title="Made with generative AI" aria-label="Made with generative AI">AI</span>}
-                <strong>{image.name}</strong><small>{image.columns} × {image.rows} cells</small><small className="image-credit">Credit: {image.credits}</small>
+                <strong>{image.name}</strong><small>{image.columns} × {image.rows} cells</small>
+                <small className="image-rights"><span>{image.rights.creator}</span>{image.rights.license && <span>{image.rights.license}</span>}</small>
               </span>
             </button>)}
           </div>}

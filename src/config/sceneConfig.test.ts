@@ -16,7 +16,7 @@ describe("scene background metadata", () => {
     const config = {
       version: 1,
       enabled: true,
-      image: { url: "https://example.com/a.png", mime: "image/png", width: 100, height: 100, ai: "yes" },
+      image: { url: "https://example.com/a.png", mime: "image/png", width: 100, height: 100, rights: { creator: "Maker" }, ai: "yes" },
       grid: { dpi: 50, offset: { x: 0, y: 0 } },
       scale: { x: 1, y: 1 },
       origin: { x: 0, y: 0 },

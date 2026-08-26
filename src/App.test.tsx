@@ -61,4 +61,34 @@ describe("background source controls", () => {
     expect(screen.queryByRole("button", { name: "Public backgrounds" })).toBeNull();
     expect(screen.queryByRole("button", { name: "My OBR maps" })).toBeNull();
   });
+
+  it("shows public image rights with complete tooltips", () => {
+    vi.mocked(useOwlbear).mockReturnValue({
+      ...state("GM"),
+      config: {
+        version: 1,
+        enabled: true,
+        image: {
+          name: "Stone",
+          url: "https://example.com/stone.webp",
+          mime: "image/webp",
+          width: 1600,
+          height: 1200,
+          columns: 8,
+          rows: 6,
+          ai: false,
+          rights: { creator: "Artist", license: "CC BY 4.0", sourceUrl: "https://example.com/source" },
+        },
+        grid: { dpi: 200, offset: { x: 0, y: 0 } },
+        scale: { x: 1, y: 1 },
+        origin: { x: 0, y: 0 },
+      },
+    });
+    render(<App />);
+    const creator = screen.getByText("Artist");
+    const license = screen.getByText("CC BY 4.0");
+    expect(creator.getAttribute("title")).toContain("Creator: Artist");
+    expect(creator.getAttribute("title")).toContain("Source Url: https://example.com/source");
+    expect(license.getAttribute("title")).toBe(creator.getAttribute("title"));
+  });
 });

@@ -38,8 +38,13 @@ export function readBackgroundConfig(metadata: Metadata): BackgroundConfigV1 | n
     !scale || !Number.isFinite(scale.x) || !Number.isFinite(scale.y) ||
     !origin || !Number.isFinite(origin.x) || !Number.isFinite(origin.y)
   ) return null;
+  const rightsAreInvalid = image.rights !== undefined && (
+    !image.rights || typeof image.rights !== "object" || Array.isArray(image.rights) ||
+    typeof image.rights.creator !== "string" || !image.rights.creator.trim() ||
+    Object.values(image.rights).some((value) => typeof value !== "string" || !value.trim())
+  );
   if (
-    (image.credits !== undefined && typeof image.credits !== "string") ||
+    rightsAreInvalid ||
     (image.ai !== undefined && typeof image.ai !== "boolean") ||
     (image.columns !== undefined && (!Number.isInteger(image.columns) || image.columns <= 0)) ||
     (image.rows !== undefined && (!Number.isInteger(image.rows) || image.rows <= 0))

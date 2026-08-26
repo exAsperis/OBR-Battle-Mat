@@ -15,15 +15,15 @@ describe("public background manifest", () => {
     const result = parseBuiltInManifest({
       version: 1,
       images: [
-        { name: "Stone", file: "stone.webp", columns: 8, rows: 6, credits: "Maker", ai: false, collection: ["Interior", "Fantasy"] },
-        { name: "Water", file: "textures/water.png", columns: 4, rows: 4, credits: "Maker", ai: true, collection: ["Natural"] },
+        { name: "Stone", file: "stone.webp", columns: 8, rows: 6, rights: { creator: "Maker", license: "CC0", source: "Archive" }, ai: false, collection: ["Interior", "Fantasy"] },
+        { name: "Water", file: "textures/water.png", columns: 4, rows: 4, rights: { creator: "Maker" }, ai: true, collection: ["Natural"] },
       ],
     }, manifestUrl);
     expect(result.images.map((image) => image.name)).toEqual(["Stone", "Water"]);
     expect(result.images[1]).toMatchObject({
       url: "https://obr-battle-mat.ex-asperis.com/backgrounds/textures/water.png",
       mime: "image/png",
-      credits: "Maker",
+      rights: { creator: "Maker" },
       ai: true,
       collection: ["Natural"],
     });
@@ -31,12 +31,12 @@ describe("public background manifest", () => {
 
   it.each([
     [{ version: 2, images: [] }],
-    [{ version: 1, images: [{ name: "Bad", file: "bad.gif", columns: 1, rows: 1, credits: "Maker", ai: false, collection: ["Test"] }] }],
-    [{ version: 1, images: [{ name: "Bad", file: "bad.png", columns: 0, rows: 1, credits: "Maker", ai: false, collection: ["Test"] }] }],
-    [{ version: 1, images: [{ name: "Bad", file: "../bad.png", columns: 1, rows: 1, credits: "Maker", ai: false, collection: ["Test"] }] }],
-    [{ version: 1, images: [{ name: "Bad", file: "bad.png", columns: 1, rows: 1, credits: "", ai: false, collection: ["Test"] }] }],
-    [{ version: 1, images: [{ name: "Bad", file: "bad.png", columns: 1, rows: 1, credits: "Maker", ai: false, collection: [] }] }],
-    [{ version: 1, images: [{ name: "Bad", file: "bad.png", columns: 1, rows: 1, credits: "Maker", ai: false, collection: ["Test", "Test"] }] }],
+    [{ version: 1, images: [{ name: "Bad", file: "bad.gif", columns: 1, rows: 1, rights: { creator: "Maker" }, ai: false, collection: ["Test"] }] }],
+    [{ version: 1, images: [{ name: "Bad", file: "bad.png", columns: 0, rows: 1, rights: { creator: "Maker" }, ai: false, collection: ["Test"] }] }],
+    [{ version: 1, images: [{ name: "Bad", file: "../bad.png", columns: 1, rows: 1, rights: { creator: "Maker" }, ai: false, collection: ["Test"] }] }],
+    [{ version: 1, images: [{ name: "Bad", file: "bad.png", columns: 1, rows: 1, rights: { creator: "" }, ai: false, collection: ["Test"] }] }],
+    [{ version: 1, images: [{ name: "Bad", file: "bad.png", columns: 1, rows: 1, rights: { creator: "Maker" }, ai: false, collection: [] }] }],
+    [{ version: 1, images: [{ name: "Bad", file: "bad.png", columns: 1, rows: 1, rights: { creator: "Maker" }, ai: false, collection: ["Test", "Test"] }] }],
   ])("rejects invalid manifest data", (value) => {
     expect(() => parseBuiltInManifest(value, manifestUrl)).toThrow();
   });
@@ -62,7 +62,7 @@ describe("public image configuration", () => {
   it("creates an exact column and row footprint", () => {
     const background = parseBuiltInManifest({
       version: 1,
-      images: [{ name: "Stone", file: "stone.webp", columns: 8, rows: 6, credits: "Maker", ai: false, collection: ["Interior"] }],
+      images: [{ name: "Stone", file: "stone.webp", columns: 8, rows: 6, rights: { creator: "Maker" }, ai: false, collection: ["Interior"] }],
     }, manifestUrl).images[0];
     const config = configFromBuiltIn(background, { width: 2048, height: 1536 });
     expect(config).toMatchObject({
@@ -70,7 +70,7 @@ describe("public image configuration", () => {
         width: 2048,
         height: 1536,
         mime: "image/webp",
-        credits: "Maker",
+        rights: { creator: "Maker" },
         ai: false,
         columns: 8,
         rows: 6,
@@ -84,7 +84,7 @@ describe("public image configuration", () => {
   it("does not apply scene DPI a second time for a 12 by 12 image", () => {
     const background = parseBuiltInManifest({
       version: 1,
-      images: [{ name: "Marble tiles", file: "marble.png", columns: 12, rows: 12, credits: "Maker", ai: false, collection: ["Interior"] }],
+      images: [{ name: "Marble tiles", file: "marble.png", columns: 12, rows: 12, rights: { creator: "Maker" }, ai: false, collection: ["Interior"] }],
     }, manifestUrl).images[0];
     expect(configFromBuiltIn(background, { width: 1158, height: 1158 })).toMatchObject({
       grid: { dpi: 96.5 },

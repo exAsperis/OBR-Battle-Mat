@@ -1,4 +1,4 @@
-import type { BackgroundConfigV1 } from "../types";
+import type { BackgroundConfigV1, ImageRights } from "../types";
 
 export const BUILT_IN_MANIFEST_PATH = "/backgrounds/manifest.json";
 
@@ -7,7 +7,7 @@ export interface BuiltInBackground {
   file: string;
   columns: number;
   rows: number;
-  credits: string;
+  rights: ImageRights;
   ai: boolean;
   collection: string[];
   url: string;
@@ -44,12 +44,13 @@ export function parseBuiltInManifest(value: unknown, manifestUrl: string): Built
   const manifestBase = new URL("./", manifestUrl);
   const images = value.images.map((entry, index): BuiltInBackground => {
     if (!isRecord(entry)) throw new Error(`Public background ${index + 1} must be an object.`);
-    const { name, file, columns, rows, credits, ai, collection } = entry;
+    const { name, file, columns, rows, rights, ai, collection } = entry;
     if (typeof name !== "string" || !name.trim()) throw new Error(`Public background ${index + 1} needs a name.`);
     if (typeof file !== "string" || !file.trim()) throw new Error(`Public background ${index + 1} needs a file.`);
     if (!Number.isInteger(columns) || Number(columns) <= 0) throw new Error(`${name} needs a positive whole-number column count.`);
     if (!Number.isInteger(rows) || Number(rows) <= 0) throw new Error(`${name} needs a positive whole-number row count.`);
-    if (typeof credits !== "string" || !credits.trim()) throw new Error(`${name} needs image credits.`);
+    if (!isRecord(rights) || typeof rights.creator !== "string" || !rights.creator.trim()) throw new Error(`${name} needs a rights object with a creator.`);
+    if (Object.values(rights).some((value) => typeof value !== "string" || !value.trim())) throw new Error(`${name} has an invalid rights field.`);
     if (typeof ai !== "boolean") throw new Error(`${name} needs an AI disclosure value.`);
     if (!Array.isArray(collection) || collection.length === 0 || collection.some((value) => typeof value !== "string" || !value.trim())) {
       throw new Error(`${name} needs at least one valid collection.`);
@@ -67,7 +68,7 @@ export function parseBuiltInManifest(value: unknown, manifestUrl: string): Built
       file,
       columns: Number(columns),
       rows: Number(rows),
-      credits: credits.trim(),
+      rights: Object.fromEntries(Object.entries(rights).map(([field, value]) => [field, String(value).trim()])) as ImageRights,
       ai,
       collection: normalizedCollections,
       url: url.href,
@@ -119,7 +120,7 @@ export function configFromBuiltIn(
       mime: background.mime,
       width,
       height,
-      credits: background.credits,
+      rights: background.rights,
       ai: background.ai,
       columns: background.columns,
       rows: background.rows,

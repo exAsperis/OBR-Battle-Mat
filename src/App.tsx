@@ -10,6 +10,14 @@ import { useOwlbear } from "./hooks/useOwlbear";
 import type { BackgroundConfigV1, RenderDistance } from "./types";
 import { RELEASE_VERSION } from "./version";
 
+function rightsTooltip(rights: NonNullable<BackgroundConfigV1["image"]>["rights"]): string {
+  if (!rights) return "";
+  return Object.entries(rights).map(([field, value]) => {
+    const label = field.replace(/([a-z])([A-Z])/g, "$1 $2").replace(/(^|_)(\w)/g, (_, space, letter: string) => `${space ? " " : ""}${letter.toUpperCase()}`);
+    return `${label}: ${value}`;
+  }).join("\n");
+}
+
 export default function App() {
   useActionHeight();
   const { status, role, sceneReady, config, error, refresh } = useOwlbear();
@@ -58,7 +66,10 @@ export default function App() {
             {config!.image!.ai && <span className="ai-glyph main-ai" title="Made with generative AI" aria-label="Made with generative AI">AI</span>}
             <strong>{config!.image!.name || "Selected image"}</strong>
             <span>{config!.image!.width} × {config!.image!.height}px{config!.image!.columns && config!.image!.rows ? ` · ${config!.image!.columns} × ${config!.image!.rows} cells` : ""}</span>
-            {config!.image!.credits && <span className="main-image-credit">Credit: {config!.image!.credits}</span>}
+            {config!.image!.rights && <span className="main-image-rights">
+              <span title={rightsTooltip(config!.image!.rights)}>{config!.image!.rights.creator}</span>
+              {config!.image!.rights.license && <span title={rightsTooltip(config!.image!.rights)}>{config!.image!.rights.license}</span>}
+            </span>}
           </div></>
             : <div className="image-placeholder"><span>＋</span><div><strong>No image selected</strong><small>Choose a background to repeat</small></div></div>}
         </div>

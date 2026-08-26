@@ -13,7 +13,7 @@ const background: BuiltInBackground = {
   file: "stone.webp",
   columns: 8,
   rows: 6,
-  credits: "ex Asperis",
+  rights: { creator: "ex Asperis", license: "CC0" },
   ai: true,
   collection: ["Interior", "Fantasy"],
   url: "https://example.com/backgrounds/stone.webp",
@@ -29,7 +29,9 @@ describe("BuiltInGallery", () => {
     const { container } = render(<BuiltInGallery busy={false} onBack={vi.fn()} onSelect={onSelect} />);
     fireEvent.click(await screen.findByRole("button", { name: /Stone Floor/ }));
     expect(screen.getByText("8 × 6 cells")).toBeTruthy();
-    expect(screen.getByText("Credit: ex Asperis")).toBeTruthy();
+    expect(screen.getByText("ex Asperis")).toBeTruthy();
+    expect(screen.getByText("CC0")).toBeTruthy();
+    expect(screen.getByText("ex Asperis").getAttribute("title")).toBeNull();
     expect(screen.getByLabelText("Made with generative AI")).toBeTruthy();
     expect(container.querySelector(".background-preview img")?.getAttribute("loading")).toBe("lazy");
     expect(onSelect).toHaveBeenCalledWith(background);

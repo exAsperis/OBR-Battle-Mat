@@ -23,7 +23,9 @@ button, input, select { font: inherit; } button { border: 0; cursor: pointer; } 
 .image-details span, .image-placeholder small, .toggle-row small { color: var(--obr-text-secondary, #aaa1b8); font-size: 11px; }
 .image-details:has(.main-ai) { padding-right: 43px; }
 .image-details .main-ai { top: 10px; right: 10px; color: #fff; }
-.image-details .main-image-credit { margin-top: 2px; }
+.image-details .main-image-rights, .background-option-details .image-rights { min-width: 0; display: flex; justify-content: space-between; gap: 8px; margin-top: 2px; }
+.main-image-rights > span, .image-rights > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.main-image-rights > span:last-child, .image-rights > span:last-child:not(:first-child) { margin-left: auto; text-align: right; }
 .image-placeholder { display: flex; align-items: center; gap: 12px; padding: 15px; }
 .image-placeholder > span { color: #b992ff; font-size: 27px; font-weight: 250; }
 .image-placeholder div, .toggle-row span { display: grid; gap: 4px; } .image-placeholder strong { font-size: 13px; }
@@ -59,7 +61,6 @@ button, input, select { font: inherit; } button { border: 0; cursor: pointer; } 
 .background-option:hover .background-option-details { opacity: 0; }
 .background-option-details strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; }
 .background-option-details small { color: var(--obr-text-secondary, #aaa1b8); font-size: 10px; }
-.background-option-details .image-credit { margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ai-glyph { position: absolute; top: 17px; right: 9px; display: grid; place-items: center; width: 22px; height: 22px; border: 1px solid rgba(255,255,255,.6); border-radius: 50%; color: #fff; background: rgba(18,14,25,.65); font-size: 8px; font-weight: 800; letter-spacing: -.02em; }
 .background-option-details:has(.ai-glyph) strong { padding-right: 25px; }
 .distance-control { margin: 0; padding: 0; border: 0; } .distance-control legend { margin-bottom: 8px; color: var(--obr-text-secondary, #aaa1b8); font-size: 11px; }

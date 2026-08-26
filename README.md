@@ -46,7 +46,7 @@ The pure pool tests verify bounded preset sizes, fixed logical coordinates, long
 Public images and their manually maintained catalog live in `public/backgrounds/`. To publish a background:
 
 1. Add a PNG, JPEG, or WebP image to `public/backgrounds/` or a subfolder beneath it.
-2. Add an entry to `public/backgrounds/manifest.json` with its display name, relative file path, columns, rows, credits, AI disclosure, and one or more collections:
+2. Add an entry to `public/backgrounds/manifest.json` with its display name, relative file path, columns, rows, rights information, AI disclosure, and one or more collections. `creator` is required; `license` and additional rights fields are optional:
 
    ```json
    {
@@ -54,7 +54,11 @@ Public images and their manually maintained catalog live in `public/backgrounds/
      "file": "stone-floor.webp",
      "columns": 8,
      "rows": 6,
-     "credits": "Artist Name",
+     "rights": {
+       "creator": "Artist Name",
+       "license": "CC BY 4.0",
+       "source": "https://example.com/original"
+     },
      "ai": false,
      "collection": ["Interior", "Fantasy"]
    }
@@ -70,11 +74,11 @@ Contributions are welcome through pull requests:
 
 1. Fork this repository and create a branch for your background.
 2. Add the PNG, JPEG, or WebP file beneath `public/backgrounds/`. Use a descriptive, unique filename and optimize the image for web delivery before committing it.
-3. Add the image to `public/backgrounds/manifest.json` using the structure above. Set `credits` to the name that should be displayed, disclose generative-AI use accurately with `ai`, and assign every applicable label in the `collection` array. Prefer an existing collection when it fits.
+3. Add the image to `public/backgrounds/manifest.json` using the structure above. Set `rights.creator` to the name that should be displayed, include the license and source when applicable, disclose generative-AI use accurately with `ai`, and assign every applicable label in the `collection` array. Prefer an existing collection when it fits.
 4. Run the verification commands documented above and test the image through the local public-background gallery.
 5. Open a pull request describing the image, its source or creation process, its license or your permission to contribute it, and any attribution requirements.
 
-Only contribute images you have the right to redistribute. By submitting a pull request, you confirm that the project may host and display the image under the repository's license and with the credits supplied in the manifest. Maintainers may request file-size, formatting, metadata, collection, licensing, or attribution changes before merging.
+Only contribute images you have the right to redistribute. By submitting a pull request, you confirm that the project may host and display the image under the stated rights information. Maintainers may request file-size, formatting, metadata, collection, licensing, or attribution changes before merging.
 
 ## Install
 
