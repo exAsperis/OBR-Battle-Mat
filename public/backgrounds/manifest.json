@@ -87,6 +87,20 @@
       }
     },
     {
+      "id": "dark-wood",
+      "name": "Dark wood",
+      "file": "Dark Wood 21x9.jpg",
+      "columns": 21,
+      "rows": 9,
+      "ai": false,
+      "collection": ["Abstract", "Realistic"],
+      "rights": {
+        "creator": "ex Asperis",
+        "license": "CC0-1.0",
+        "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+      }
+    },
+    {
       "id": "desert-north-african",
       "name": "Desert",
       "file": "Desert.png",
