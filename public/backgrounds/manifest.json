@@ -73,6 +73,20 @@
       }
     },
     {
+      "id": "cumulus",
+      "name": "Cumulus clouds",
+      "file": "Cumulus 16x16.jpg",
+      "columns": 16,
+      "rows": 16,
+      "ai": true,
+      "collection": ["Natural", "Realistic"],
+      "rights": {
+        "creator": "ex Asperis",
+        "license": "CC0-1.0",
+        "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+      }
+    },
+    {
       "id": "cyberpunk",
       "name": "Cyberpunk",
       "file": "Cyberpunk 16x16.png",
