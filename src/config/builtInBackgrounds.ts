@@ -91,12 +91,12 @@ export async function loadImageDimensions(url: string): Promise<ImageDimensions>
 export function configFromBuiltIn(
   background: BuiltInBackground,
   dimensions: ImageDimensions,
-  sceneDpi: number,
 ): BackgroundConfigV1 {
   const { width, height } = dimensions;
-  if (!(width > 0) || !(height > 0) || !(sceneDpi > 0)) {
-    throw new Error("The built-in background cannot be sized with the current image and scene dimensions.");
+  if (!(width > 0) || !(height > 0)) {
+    throw new Error("The built-in background cannot be sized with the current image dimensions.");
   }
+  const imageDpi = width / background.columns;
   return {
     version: 1,
     enabled: true,
@@ -107,10 +107,10 @@ export function configFromBuiltIn(
       width,
       height,
     },
-    grid: { dpi: width / background.columns, offset: { x: 0, y: 0 } },
+    grid: { dpi: imageDpi, offset: { x: 0, y: 0 } },
     scale: {
-      x: background.columns * sceneDpi / width,
-      y: background.rows * sceneDpi / height,
+      x: 1,
+      y: background.rows * imageDpi / height,
     },
     origin: { x: 0, y: 0 },
   };

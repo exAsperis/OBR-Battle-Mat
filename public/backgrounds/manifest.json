@@ -79,6 +79,13 @@
       "rows": 16
     },
     {
+      "id": "old-table",
+      "name": "Old table",
+      "file": "Old table 16x16.png",
+      "columns": 16,
+      "rows": 16
+    },
+    {
       "id": "ocean-floor",
       "name": "Ocean floor",
       "file": "Ocean floor 16x16.png",
@@ -91,6 +98,20 @@
       "file": "Ocean.png",
       "columns": 16,
       "rows": 16
+    },
+    {
+      "id": "parchment",
+      "name": "Parchment",
+      "file": "Parchment 16x16.png",
+      "columns": 16,
+      "rows": 16
+    },
+    {
+      "id": "parque",
+      "name": "Parque",
+      "file": "Parque 6x6.png",
+      "columns": 6,
+      "rows": 6
     },
     {
       "id": "savanna",

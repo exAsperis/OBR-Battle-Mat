@@ -37,8 +37,8 @@ export default function App() {
     if (images.length) await OBR.scene.setMetadata(backgroundMetadata(configFromImage(images[0])));
   });
   const chooseBuiltIn = (background: BuiltInBackground) => runGmAction(async () => {
-    const [dimensions, sceneDpi] = await Promise.all([loadImageDimensions(background.url), OBR.scene.grid.getDpi()]);
-    await OBR.scene.setMetadata(backgroundMetadata(configFromBuiltIn(background, dimensions, sceneDpi)));
+    const dimensions = await loadImageDimensions(background.url);
+    await OBR.scene.setMetadata(backgroundMetadata(configFromBuiltIn(background, dimensions)));
     setShowBuiltIns(false);
   });
   const updateConfig = (next: BackgroundConfigV1) => runGmAction(() => OBR.scene.setMetadata(backgroundMetadata(next)));

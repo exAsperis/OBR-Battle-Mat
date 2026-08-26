@@ -58,13 +58,24 @@ describe("built-in image configuration", () => {
       version: 1,
       images: [{ name: "Stone", file: "stone.webp", columns: 8, rows: 6 }],
     }, manifestUrl).images[0];
-    const config = configFromBuiltIn(background, { width: 2048, height: 1536 }, 150);
+    const config = configFromBuiltIn(background, { width: 2048, height: 1536 });
     expect(config).toMatchObject({
       image: { width: 2048, height: 1536, mime: "image/webp" },
       grid: { dpi: 256, offset: { x: 0, y: 0 } },
-      scale: { x: 1200 / 2048, y: 900 / 1536 },
+      scale: { x: 1, y: 1 },
     });
     expect(readBackgroundConfig(backgroundMetadata(config))).toEqual(config);
+  });
+
+  it("does not apply scene DPI a second time for a 12 by 12 image", () => {
+    const background = parseBuiltInManifest({
+      version: 1,
+      images: [{ name: "Marble tiles", file: "marble.png", columns: 12, rows: 12 }],
+    }, manifestUrl).images[0];
+    expect(configFromBuiltIn(background, { width: 1158, height: 1158 })).toMatchObject({
+      grid: { dpi: 96.5 },
+      scale: { x: 1, y: 1 },
+    });
   });
 
   it("discovers intrinsic browser image dimensions", async () => {
