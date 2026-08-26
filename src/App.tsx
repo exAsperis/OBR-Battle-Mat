@@ -28,24 +28,24 @@ export default function App() {
     finally { setBusy(false); }
   };
   const chooseImage = () => runGmAction(async () => {
-    const images = await OBR.assets.downloadImages(false, config?.image?.name, "MAP");
+    const images = await OBR.assets.downloadImages(false, undefined, "MAP");
     if (images.length) await OBR.scene.setMetadata(backgroundMetadata(configFromImage(images[0])));
   });
   const updateConfig = (next: BackgroundConfigV1) => runGmAction(() => OBR.scene.setMetadata(backgroundMetadata(next)));
   const changeDistance = (value: RenderDistance) => { setRenderDistance(value); setDistanceState(value); };
   if (status === "connecting") return <main className="center-state"><div className="spinner" /><p>Connecting to Owlbear Rodeo…</p></main>;
-  if (status === "error") return <main className="center-state"><div className="app-mark small">BM</div><h1>Battle Mat unavailable</h1><p>{error}</p><button onClick={() => void refresh()}>Try again</button></main>;
+  if (status === "error") return <main className="center-state"><img className="app-mark small" src="/icon.svg" alt="" /><h1>Battle Mat unavailable</h1><p>{error}</p><button onClick={() => void refresh()}>Try again</button></main>;
   const tileCount = poolSizeForRadius(radiusForRenderDistance(distance));
   const configured = Boolean(config?.image);
   return <main className="app-shell">
-    <header className="app-header"><div className="app-mark">BM</div><div><p className="eyebrow">Owlbear Rodeo</p><h1>Battle Mat</h1></div><span className={`status-pill ${config?.enabled ? "active" : ""}`}>{config?.enabled ? "Active" : "Inactive"}</span></header>
+    <header className="app-header"><img className="app-mark" src="/icon.svg" alt="" /><h1>Battle Mat</h1><span className={`status-pill ${config?.enabled ? "active" : ""}`}>{config?.enabled ? "Active" : "Inactive"}</span></header>
     {!sceneReady ? <section className="empty-card"><div className="scene-icon">◇</div><h2>No scene open</h2><p>Open a scene to configure its repeating background.</p></section> : <>
       <section className="panel">
         <div className="section-heading"><div><p className="eyebrow">Shared with everyone</p><h2>Scene background</h2></div>{role !== "GM" && <span className="role-chip">GM controlled</span>}</div>
-        <div className={`image-card ${configured ? "configured" : ""}`}>
+        <button type="button" className={`image-card ${configured ? "configured" : ""}`} disabled={role !== "GM" || busy} onClick={() => void chooseImage()}>
           {configured ? <><div className="thumbnail" style={{ backgroundImage: `url(${config!.image!.url})` }} role="img" aria-label="Current background preview" /><div className="image-details"><strong>{config!.image!.name || "Selected image"}</strong><span>{config!.image!.width} × {config!.image!.height}px</span></div></>
             : <div className="image-placeholder"><span>＋</span><div><strong>No image selected</strong><small>Choose a map asset to repeat</small></div></div>}
-        </div>
+        </button>
         {role === "GM" ? <div className="gm-controls">
           <label className="toggle-row"><span><strong>Enabled</strong><small>Show this background to all players</small></span><input type="checkbox" checked={Boolean(config?.enabled)} disabled={!configured || busy} onChange={(event) => config && void updateConfig({ ...config, enabled: event.target.checked })} /></label>
           <div className="button-row"><button className="primary" disabled={busy} onClick={() => void chooseImage()}>{busy ? "Working…" : configured ? "Replace image" : "Choose image"}</button>{configured && <button className="danger" disabled={busy} onClick={() => void updateConfig(EMPTY_BACKGROUND_CONFIG)}>Clear</button>}</div>

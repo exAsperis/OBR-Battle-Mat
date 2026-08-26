@@ -12,6 +12,6 @@
     "icon": "http://localhost:5173/icon.svg",
     "popover": "http://localhost:5173/extension.html",
     "width": 440,
-    "height": 650
+    "height": 600
   }
 }

@@ -6,7 +6,7 @@ button, input { font: inherit; } button { border: 0; cursor: pointer; } button:d
 .app-header { display: flex; align-items: center; gap: 11px; padding: 2px 2px 6px; }
 .app-header h1, .center-state h1 { margin: 1px 0 0; font-size: 21px; line-height: 1.1; letter-spacing: -.02em; }
 .eyebrow { margin: 0; color: var(--obr-text-secondary, #aaa1b8); font-size: 10px; font-weight: 750; letter-spacing: .11em; text-transform: uppercase; }
-.app-mark { width: 42px; height: 42px; display: grid; place-items: center; flex: 0 0 auto; border: 1px solid rgba(255,255,255,.16); border-radius: 13px; color: white; background: linear-gradient(145deg, #9b6af0, #5630a6); box-shadow: 0 8px 22px rgba(67,34,128,.35); font-size: 12px; font-weight: 900; }
+.app-mark { width: 42px; height: 42px; display: block; flex: 0 0 auto; border: 1px solid rgba(255,255,255,.16); border-radius: 13px; background: #211c2a; box-shadow: 0 8px 22px rgba(67,34,128,.35); }
 .app-mark.small { width: 36px; height: 36px; margin: auto; border-radius: 11px; }
 .status-pill, .role-chip, .tile-count { margin-left: auto; padding: 5px 9px; border: 1px solid var(--obr-border, rgba(255,255,255,.12)); border-radius: 99px; color: var(--obr-text-secondary, #aaa1b8); background: rgba(255,255,255,.035); font-size: 10px; font-weight: 750; text-transform: uppercase; letter-spacing: .06em; }
 .status-pill.active { color: #96e7bf; border-color: rgba(86,203,142,.35); background: rgba(46,154,100,.12); }
@@ -14,7 +14,7 @@ button, input { font: inherit; } button { border: 0; cursor: pointer; } button:d
 .section-heading { display: flex; align-items: center; gap: 10px; margin-bottom: 13px; }
 .section-heading h2, .empty-card h2 { margin: 2px 0 0; font-size: 15px; }
 .role-chip { margin-left: auto; } .tile-count { color: var(--obr-text-primary, #f5f1ff); text-transform: none; letter-spacing: 0; }
-.image-card { min-height: 84px; display: flex; align-items: center; overflow: hidden; border: 1px dashed var(--obr-border, rgba(255,255,255,.15)); border-radius: 11px; background: rgba(0,0,0,.12); }
+.image-card { width: 100%; min-height: 84px; display: flex; align-items: center; overflow: hidden; border: 1px dashed var(--obr-border, rgba(255,255,255,.15)); border-radius: 11px; background: rgba(0,0,0,.12); color: inherit; font: inherit; text-align: left; }
 .image-card.configured { border-style: solid; }
 .thumbnail { align-self: stretch; width: 92px; flex: 0 0 auto; background-position: center; background-size: cover; box-shadow: inset -1px 0 rgba(255,255,255,.08); }
 .image-details { min-width: 0; display: grid; gap: 5px; padding: 13px; }
