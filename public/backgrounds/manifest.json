@@ -9,6 +9,13 @@
       "rows": 16
     },
     {
+      "id": "clouds",
+      "name": "Clouds",
+      "file": "Clouds 16x16.png",
+      "columns": 16,
+      "rows": 16
+    },
+    {
       "id": "cyberpunk",
       "name": "Cyberpunk",
       "file": "Cyberpunk 16x16.png",
@@ -126,6 +133,13 @@
       "file": "Sand ripples 16x16.png",
       "columns": 16,
       "rows": 16
+    },
+    {
+      "id": "sandstone-tile",
+      "name": "Sandstone tile",
+      "file": "Sandstone tile 5x5.png",
+      "columns": 5,
+      "rows": 5
     },
     {
       "id": "savanna",
