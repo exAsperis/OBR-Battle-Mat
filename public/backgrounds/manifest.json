@@ -6,175 +6,290 @@
       "name": "Autumn forest",
       "file": "Autumn forest 16x16.png",
       "columns": 16,
-      "rows": 16
+      "rows": 16,
+      "credits": "ex Asperis",
+      "ai": true,
+      "collection": ["Natural", "Realistic"]
+    },
+    {
+      "id": "blue-tiles",
+      "name": "Blue tiles",
+      "file": "Blue tiles 8x8.jpg",
+      "columns": 8,
+      "rows": 8,
+      "credits": "ex Asperis",
+      "ai": false,
+      "collection": ["Abstract"]
     },
     {
       "id": "clouds",
       "name": "Clouds",
       "file": "Clouds 16x16.png",
       "columns": 16,
-      "rows": 16
+      "rows": 16,
+      "credits": "ex Asperis",
+      "ai": true,
+      "collection": ["Natural", "Realistic"]
+    },
+    {
+      "id": "ceramic-tiles",
+      "name": "Colorful ceramic tiles",
+      "file": "tiles-1483744498VA4.jpg",
+      "columns": 10,
+      "rows": 10,
+      "credits": "Dawn Hudson (CC0)",
+      "ai": false,
+      "collection": ["Abstract", "Realistic"]
+    },
+    {
+      "id": "cpu-bottom",
+      "name": "CPU",
+      "file": "cpu-bottom.jpg",
+      "columns": 9,
+      "rows": 6,
+      "credits": "ex Asperis",
+      "ai": false,
+      "collection": ["Sci-Fi", "Realistic", "Abstract"]
     },
     {
       "id": "cyberpunk",
       "name": "Cyberpunk",
       "file": "Cyberpunk 16x16.png",
       "columns": 16,
-      "rows": 16
+      "rows": 16,
+      "credits": "ex Asperis",
+      "ai": true,
+      "collection": ["Sci-Fi", "Realistic"]
     },
     {
       "id": "desert-north-african",
       "name": "Desert",
       "file": "Desert.png",
       "columns": 16,
-      "rows": 16
+      "rows": 16,
+      "credits": "ex Asperis",
+      "ai": true,
+      "collection": ["Natural", "Realistic"]
     },
     {
       "id": "dungeon",
       "name": "Dungeon",
       "file": "Dungeon.png",
       "columns": 16,
-      "rows": 16
+      "rows": 16,
+      "credits": "ex Asperis",
+      "ai": true,
+      "collection": ["Interior", "Realistic"]
     },
     {
       "id": "forest-floor",
       "name": "Forest floor",
       "file": "Forest floor 16x16.png",
       "columns": 8,
-      "rows": 8
+      "rows": 8,
+      "credits": "ex Asperis",
+      "ai": true,
+      "collection": ["Natural", "Realistic"]
     },
     {
       "id": "fractal-sepia",
       "name": "Fractal (sepia)",
       "file": "Fractal 16x16.png",
       "columns": 16,
-      "rows": 16
+      "rows": 16,
+      "credits": "ex Asperis",
+      "ai": true,
+      "collection": ["Abstract"]
     },
     {
       "id": "grassland",
       "name": "Grassland",
       "file": "Grasslands.png",
       "columns": 16,
-      "rows": 16
+      "rows": 16,
+      "credits": "ex Asperis",
+      "ai": true,
+      "collection": ["Natural", "Realistic"]
     },
     {
       "id": "industrial",
       "name": "Industrial",
       "file": "Industrial 16x16.png",
       "columns": 16,
-      "rows": 16
+      "rows": 16,
+      "credits": "ex Asperis",
+      "ai": true,
+      "collection": ["Sci-Fi", "Realistic"]
+    },
+    {
+      "id": "keyboard",
+      "name": "Keyboard",
+      "file": "Keyboard.jpg",
+      "columns": 4,
+      "rows": 5,
+      "credits": "ex Asperis",
+      "ai": false,
+      "collection": ["Abstract", "Realistic"]
     },
     {
       "id": "lunar-surface",
       "name": "Lunar surface",
       "file": "Lunar surface 16x16.png",
       "columns": 16,
-      "rows": 16
+      "rows": 16,
+      "credits": "ex Asperis",
+      "ai": true,
+      "collection": ["Sci-Fi", "Realistic"]
     },
     {
       "id": "marble-tiles",
       "name": "Marble tiles",
       "file": "Marble tiles 12x12.png",
       "columns": 12,
-      "rows": 12
+      "rows": 12,
+      "credits": "ex Asperis",
+      "ai": true,
+      "collection": ["Interior", "Realistic"]
     },
     {
       "id": "martian-surface",
       "name": "Martian surface",
       "file": "Martian surface 16x16.png",
       "columns": 16,
-      "rows": 16
+      "rows": 16,
+      "credits": "ex Asperis",
+      "ai": true,
+      "collection": ["Sci-Fi", "Realistic"]
     },
     {
       "id": "meadow",
       "name": "Meadow",
       "file": "Meadow 16x16.png",
       "columns": 16,
-      "rows": 16
+      "rows": 16,
+      "credits": "ex Asperis",
+      "ai": true,
+      "collection": ["Natural", "Realistic"]
     },
     {
       "id": "old-table",
       "name": "Old table",
       "file": "Old table 16x16.png",
       "columns": 16,
-      "rows": 16
+      "rows": 16,
+      "credits": "ex Asperis",
+      "ai": true,
+      "collection": ["Interior", "Realistic"]
     },
     {
       "id": "ocean-floor",
       "name": "Ocean floor",
       "file": "Ocean floor 16x16.png",
       "columns": 16,
-      "rows": 16
+      "rows": 16,
+      "credits": "ex Asperis",
+      "ai": true,
+      "collection": ["Natural", "Realistic"]
     },
     {
       "id": "ocean-surface",
       "name": "Ocean surface",
       "file": "Ocean.png",
       "columns": 16,
-      "rows": 16
+      "rows": 16,
+      "credits": "ex Asperis",
+      "ai": true,
+      "collection": ["Natural", "Realistic"]
     },
     {
       "id": "parchment",
       "name": "Parchment",
       "file": "Parchment 16x16.png",
       "columns": 16,
-      "rows": 16
+      "rows": 16,
+      "credits": "ex Asperis",
+      "ai": true,
+      "collection": ["Abstract", "Realistic"]
     },
     {
       "id": "parque",
       "name": "Parque",
       "file": "Parque 6x6.png",
       "columns": 6,
-      "rows": 6
+      "rows": 6,
+      "credits": "ex Asperis",
+      "ai": true,
+      "collection": ["Interior", "Realistic"]
     },
     {
       "id": "sand-ripples",
       "name": "Sand ripples",
       "file": "Sand ripples 16x16.png",
       "columns": 16,
-      "rows": 16
+      "rows": 16,
+      "credits": "ex Asperis",
+      "ai": true,
+      "collection": ["Natural", "Realistic"]
     },
     {
       "id": "sandstone-tile",
       "name": "Sandstone tile",
       "file": "Sandstone tile 5x5.png",
       "columns": 5,
-      "rows": 5
+      "rows": 5,
+      "credits": "ex Asperis",
+      "ai": true,
+      "collection": ["Interior", "Realistic"]
     },
     {
       "id": "savanna",
       "name": "Savanna",
       "file": "Savanna 16x16.png",
       "columns": 16,
-      "rows": 16
+      "rows": 16,
+      "credits": "ex Asperis",
+      "ai": true,
+      "collection": ["Natural", "Realistic"]
     },
     {
       "id": "snowscape",
       "name": "Snowscape",
       "file": "Snowscape 16x16.png",
       "columns": 16,
-      "rows": 16
+      "rows": 16,
+      "credits": "ex Asperis",
+      "ai": true,
+      "collection": ["Natural", "Realistic"]
     },
     {
       "id": "space-ship-deck",
       "name": "Space ship deck",
       "file": "Space ship deck 16x16.png",
       "columns": 16,
-      "rows": 16
+      "rows": 16,
+      "credits": "ex Asperis",
+      "ai": true,
+      "collection": ["Sci-Fi", "Realistic"]
     },
     {
       "id": "starfield",
       "name": "Starfield",
       "file": "Starfield 16x16.png",
       "columns": 16,
-      "rows": 16
+      "rows": 16,
+      "credits": "ex Asperis",
+      "ai": true,
+      "collection": ["Sci-Fi", "Realistic"]
     },
     {
       "id": "tundra",
       "name": "Tundra",
       "file": "Tundra 16x16.png",
       "columns": 16,
-      "rows": 16
+      "rows": 16,
+      "credits": "ex Asperis",
+      "ai": true,
+      "collection": ["Natural", "Realistic"]
     }
   ]
 }

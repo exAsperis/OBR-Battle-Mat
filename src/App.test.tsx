@@ -25,7 +25,7 @@ vi.mock("@owlbear-rodeo/sdk", () => ({
 vi.mock("./hooks/useOwlbear", () => ({ useOwlbear: vi.fn() }));
 vi.mock("./hooks/useActionHeight", () => ({ useActionHeight: vi.fn() }));
 vi.mock("./components/BuiltInGallery", () => ({
-  BuiltInGallery: ({ onBack }: { onBack: () => void }) => <div><span>Built-in gallery</span><button onClick={onBack}>Back</button></div>,
+  BuiltInGallery: ({ onBack }: { onBack: () => void }) => <div><span>Public gallery</span><button onClick={onBack}>Back</button></div>,
 }));
 
 function state(role: "GM" | "PLAYER") {
@@ -41,10 +41,10 @@ describe("background source controls", () => {
     sdk.setMetadata.mockReset().mockResolvedValue(undefined);
   });
 
-  it("opens the built-in gallery and returns to both source buttons", () => {
+  it("opens the public gallery and returns to both source buttons", () => {
     render(<App />);
-    fireEvent.click(screen.getByRole("button", { name: "Built-in backgrounds" }));
-    expect(screen.getByText("Built-in gallery")).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Public backgrounds" }));
+    expect(screen.getByText("Public gallery")).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "Back" }));
     expect(screen.getByRole("button", { name: "My OBR maps" })).toBeTruthy();
   });
@@ -58,7 +58,7 @@ describe("background source controls", () => {
   it("does not expose background selection controls to players", () => {
     vi.mocked(useOwlbear).mockReturnValue(state("PLAYER"));
     render(<App />);
-    expect(screen.queryByRole("button", { name: "Built-in backgrounds" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Public backgrounds" })).toBeNull();
     expect(screen.queryByRole("button", { name: "My OBR maps" })).toBeNull();
   });
 });

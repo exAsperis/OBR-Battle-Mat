@@ -5,7 +5,7 @@ OBR Battle Mat is an Owlbear Rodeo extension that repeats one GM-selected map im
 ## How it works
 
 - The GM-selected image and its grid, scale, and origin are stored in namespaced scene metadata.
-- GMs can choose an Owlbear Rodeo map asset or a built-in background maintained in this repository.
+- GMs can choose an Owlbear Rodeo map asset or a public background maintained in this repository.
 - A manifest background page renders only `OBR.scene.local` image items on each client.
 - A fixed-size pool follows the camera by recycling tiles only after the center crosses a tile boundary.
 - Zoom never changes the pool size.
@@ -41,25 +41,40 @@ pnpm run build
 
 The pure pool tests verify bounded preset sizes, fixed logical coordinates, long-distance reassignment, and the nine-item update expected when a Medium pool moves one tile horizontally. Full acceptance testing also requires an Owlbear room to verify cross-client asset access, z-order beneath maps and grid, noninteraction, scene switching, and local-item behavior.
 
-## Managing built-in backgrounds
+## Managing public backgrounds
 
-Built-in images and their manually maintained catalog live in `public/backgrounds/`. To publish a background:
+Public images and their manually maintained catalog live in `public/backgrounds/`. To publish a background:
 
 1. Add a PNG, JPEG, or WebP image to `public/backgrounds/` or a subfolder beneath it.
-2. Add an entry to `public/backgrounds/manifest.json` with its display name, relative file path, columns, and rows:
+2. Add an entry to `public/backgrounds/manifest.json` with its display name, relative file path, columns, rows, credits, AI disclosure, and one or more collections:
 
    ```json
    {
      "name": "Stone Floor",
      "file": "stone-floor.webp",
      "columns": 8,
-     "rows": 6
+     "rows": 6,
+     "credits": "Artist Name",
+     "ai": false,
+     "collection": ["Interior", "Fantasy"]
    }
    ```
 
-3. Commit and push the image and manifest change to `main`, wait for the Azure Static Web Apps deployment, then use **Refresh** in the built-in gallery.
+3. Commit and push the image and manifest change to `main`, wait for the Azure Static Web Apps deployment, then use **Refresh** in the public gallery.
 
 Catalog order controls gallery order. Removing an entry hides it from the gallery, but scenes that already use it retain its URL. Keep the underlying image hosted while those scenes may still need it. When changing an image's pixels, use a new filename so clients do not reuse a cached copy.
+
+### Contributing a public background
+
+Contributions are welcome through pull requests:
+
+1. Fork this repository and create a branch for your background.
+2. Add the PNG, JPEG, or WebP file beneath `public/backgrounds/`. Use a descriptive, unique filename and optimize the image for web delivery before committing it.
+3. Add the image to `public/backgrounds/manifest.json` using the structure above. Set `credits` to the name that should be displayed, disclose generative-AI use accurately with `ai`, and assign every applicable label in the `collection` array. Prefer an existing collection when it fits.
+4. Run the verification commands documented above and test the image through the local public-background gallery.
+5. Open a pull request describing the image, its source or creation process, its license or your permission to contribute it, and any attribution requirements.
+
+Only contribute images you have the right to redistribute. By submitting a pull request, you confirm that the project may host and display the image under the repository's license and with the credits supplied in the manifest. Maintainers may request file-size, formatting, metadata, collection, licensing, or attribution changes before merging.
 
 ## Install
 

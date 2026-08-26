@@ -38,6 +38,12 @@ export function readBackgroundConfig(metadata: Metadata): BackgroundConfigV1 | n
     !scale || !Number.isFinite(scale.x) || !Number.isFinite(scale.y) ||
     !origin || !Number.isFinite(origin.x) || !Number.isFinite(origin.y)
   ) return null;
+  if (
+    (image.credits !== undefined && typeof image.credits !== "string") ||
+    (image.ai !== undefined && typeof image.ai !== "boolean") ||
+    (image.columns !== undefined && (!Number.isInteger(image.columns) || image.columns <= 0)) ||
+    (image.rows !== undefined && (!Number.isInteger(image.rows) || image.rows <= 0))
+  ) return null;
   return candidate as BackgroundConfigV1;
 }
 

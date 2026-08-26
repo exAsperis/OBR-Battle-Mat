@@ -51,15 +51,20 @@ export default function App() {
     <header className="app-header"><img className="app-mark" src="/icon.svg" alt="" /><h1>Battle Mat</h1><span className={`status-pill ${config?.enabled ? "active" : ""}`}>{config?.enabled ? "Active" : "Inactive"}</span></header>
     {!sceneReady ? <section className="empty-card"><div className="scene-icon">◇</div><h2>No scene open</h2><p>Open a scene to configure its repeating background.</p></section> : <>
       <section className="panel">
-        <div className="section-heading"><div><p className="eyebrow">Shared with everyone</p><h2>{showBuiltIns ? "Built-in backgrounds" : "Scene background"}</h2></div>{role !== "GM" && <span className="role-chip">GM controlled</span>}</div>
+        <div className="section-heading"><div><h2>{showBuiltIns ? "Public backgrounds" : "Scene background"}</h2></div>{role !== "GM" && <span className="role-chip">GM controlled</span>}</div>
         {showBuiltIns && role === "GM" ? <BuiltInGallery busy={busy} onBack={() => setShowBuiltIns(false)} onSelect={(background) => void chooseBuiltIn(background)} /> : <>
         <div className={`image-card ${configured ? "configured" : ""}`}>
-          {configured ? <><div className="thumbnail" style={{ backgroundImage: `url(${config!.image!.url})` }} role="img" aria-label="Current background preview" /><div className="image-details"><strong>{config!.image!.name || "Selected image"}</strong><span>{config!.image!.width} × {config!.image!.height}px</span></div></>
+          {configured ? <><div className="thumbnail" style={{ backgroundImage: `url(${config!.image!.url})` }} role="img" aria-label="Current background preview" /><div className="image-details">
+            {config!.image!.ai && <span className="ai-glyph main-ai" title="Made with generative AI" aria-label="Made with generative AI">AI</span>}
+            <strong>{config!.image!.name || "Selected image"}</strong>
+            <span>{config!.image!.width} × {config!.image!.height}px{config!.image!.columns && config!.image!.rows ? ` · ${config!.image!.columns} × ${config!.image!.rows} cells` : ""}</span>
+            {config!.image!.credits && <span className="main-image-credit">Credit: {config!.image!.credits}</span>}
+          </div></>
             : <div className="image-placeholder"><span>＋</span><div><strong>No image selected</strong><small>Choose a background to repeat</small></div></div>}
         </div>
         {role === "GM" ? <div className="gm-controls">
           <label className="toggle-row"><span><strong>Enabled</strong><small>Show this background to all players</small></span><input type="checkbox" checked={Boolean(config?.enabled)} disabled={!configured || busy} onChange={(event) => config && void updateConfig({ ...config, enabled: event.target.checked })} /></label>
-          <div className="source-buttons"><button className="primary" disabled={busy} onClick={() => { setActionError(null); setShowBuiltIns(true); }}>Built-in backgrounds</button><button className="secondary" disabled={busy} onClick={() => void chooseImage()}>My OBR maps</button></div>
+          <div className="source-buttons"><button className="primary" disabled={busy} onClick={() => { setActionError(null); setShowBuiltIns(true); }}>Public backgrounds</button><button className="secondary" disabled={busy} onClick={() => void chooseImage()}>My OBR maps</button></div>
           {configured && <div className="button-row"><button className="danger" disabled={busy} onClick={() => void updateConfig(EMPTY_BACKGROUND_CONFIG)}>Clear background</button></div>}
         </div> : <p className="player-note">{config?.enabled ? "The GM has enabled a repeating background for this scene." : "No repeating background is enabled for this scene."}</p>}
         </>}

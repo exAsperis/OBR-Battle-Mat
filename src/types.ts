@@ -1,9 +1,17 @@
 import type { ImageContent, ImageGrid, Vector2 } from "@owlbear-rodeo/sdk";
 
+export type BackgroundImage = ImageContent & {
+  name?: string;
+  credits?: string;
+  ai?: boolean;
+  columns?: number;
+  rows?: number;
+};
+
 export interface BackgroundConfigV1 {
   version: 1;
   enabled: boolean;
-  image: ({ name?: string } & ImageContent) | null;
+  image: BackgroundImage | null;
   grid: ImageGrid | null;
   scale: Vector2;
   origin: Vector2;
