@@ -25,9 +25,9 @@
     {
       "id": "desert-north-african",
       "name": "Desert",
-      "file": "Desert.png",
-      "columns": 16,
-      "rows": 16
+      "file": "Desert.jpg",
+      "columns": 32,
+      "rows": 32
     },
     {
       "id": "dungeon",
