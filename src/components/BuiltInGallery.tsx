@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { fetchBuiltInManifest, type BuiltInBackground } from "../config/builtInBackgrounds";
 
 interface BuiltInGalleryProps {
@@ -11,6 +11,8 @@ export function BuiltInGallery({ busy, onBack, onSelect }: BuiltInGalleryProps) 
   const [images, setImages] = useState<BuiltInBackground[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [collection, setCollection] = useState("all");
+  const [hideAi, setHideAi] = useState(false);
   const request = useRef(0);
 
   const load = useCallback(async () => {
@@ -23,7 +25,7 @@ export function BuiltInGallery({ busy, onBack, onSelect }: BuiltInGalleryProps) 
     } catch (cause) {
       if (current === request.current) {
         setImages([]);
-        setError(cause instanceof Error ? cause.message : "Unable to load built-in backgrounds.");
+        setError(cause instanceof Error ? cause.message : "Unable to load public backgrounds.");
       }
     } finally {
       if (current === request.current) setLoading(false);
@@ -35,18 +37,35 @@ export function BuiltInGallery({ busy, onBack, onSelect }: BuiltInGalleryProps) 
     return () => { request.current += 1; };
   }, [load]);
 
+  const collections = useMemo(() => [...new Set(images.flatMap((image) => image.collection))].sort((a, b) => a.localeCompare(b)), [images]);
+  const filteredImages = useMemo(() => images.filter((image) =>
+    (collection === "all" || image.collection.includes(collection)) && (!hideAi || !image.ai)
+  ), [collection, hideAi, images]);
+
   return <>
+    <div className="gallery-filters">
+      <label className="collection-filter"><span>Collection</span><select value={collection} onChange={(event) => setCollection(event.target.value)}>
+        <option value="all">All collections</option>
+        {collections.map((value) => <option key={value} value={value}>{value}</option>)}
+      </select></label>
+      <label className="compact-toggle"><span>Hide AI</span><input type="checkbox" checked={hideAi} onChange={(event) => setHideAi(event.target.checked)} /></label>
+    </div>
     <div className="gallery-toolbar">
       <button type="button" className="secondary" disabled={busy} onClick={onBack}>← Back</button>
       <button type="button" className="secondary" disabled={busy || loading} onClick={() => void load()}>Refresh</button>
     </div>
-    {loading ? <div className="gallery-state"><div className="spinner" /><p>Loading built-in backgrounds…</p></div>
+    {loading ? <div className="gallery-state"><div className="spinner" /><p>Loading public backgrounds…</p></div>
       : error ? <div className="gallery-state"><p className="error-notice" role="alert">{error}</p><button type="button" className="primary" disabled={busy} onClick={() => void load()}>Try again</button></div>
-        : images.length === 0 ? <div className="gallery-state"><p>No built-in backgrounds are available yet.</p></div>
-          : <div className="background-gallery" aria-label="Built-in backgrounds">
-            {images.map((image) => <button type="button" className="background-option" key={image.url} disabled={busy} onClick={() => onSelect(image)}>
-              <span className="background-preview" style={{ backgroundImage: `url(${image.url})` }} />
-              <span className="background-option-details"><strong>{image.name}</strong><small>{image.columns} × {image.rows} cells</small></span>
+        : images.length === 0 ? <div className="gallery-state"><p>No public backgrounds are available yet.</p></div>
+          : filteredImages.length === 0 ? <div className="gallery-state"><p>No public backgrounds match these filters.</p></div>
+          : <div className="background-gallery" aria-label="Public backgrounds">
+            {filteredImages.map((image) => <button type="button" className="background-option" key={image.url} disabled={busy} onClick={() => onSelect(image)}>
+              <span className="background-preview"><img src={image.url} alt="" loading="lazy" decoding="async" /></span>
+              <span className="background-option-details">
+                {image.ai && <span className="ai-glyph" title="Made with generative AI" aria-label="Made with generative AI">AI</span>}
+                <strong>{image.name}</strong><small>{image.columns} × {image.rows} cells</small>
+                <small className="image-rights"><span>{image.rights.creator}</span>{image.rights.license && <span>{image.rights.license}</span>}</small>
+              </span>
             </button>)}
           </div>}
   </>;

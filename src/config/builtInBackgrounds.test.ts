@@ -10,27 +10,33 @@ import { backgroundMetadata, readBackgroundConfig } from "./sceneConfig";
 
 const manifestUrl = "https://obr-battle-mat.ex-asperis.com/backgrounds/manifest.json";
 
-describe("built-in background manifest", () => {
+describe("public background manifest", () => {
   it("parses entries in catalog order and resolves relative image URLs", () => {
     const result = parseBuiltInManifest({
       version: 1,
       images: [
-        { name: "Stone", file: "stone.webp", columns: 8, rows: 6 },
-        { name: "Water", file: "textures/water.png", columns: 4, rows: 4 },
+        { name: "Stone", file: "stone.webp", columns: 8, rows: 6, rights: { creator: "Maker", license: "CC0", source: "Archive" }, ai: false, collection: ["Interior", "Fantasy"] },
+        { name: "Water", file: "textures/water.png", columns: 4, rows: 4, rights: { creator: "Maker" }, ai: true, collection: ["Natural"] },
       ],
     }, manifestUrl);
     expect(result.images.map((image) => image.name)).toEqual(["Stone", "Water"]);
     expect(result.images[1]).toMatchObject({
       url: "https://obr-battle-mat.ex-asperis.com/backgrounds/textures/water.png",
       mime: "image/png",
+      rights: { creator: "Maker" },
+      ai: true,
+      collection: ["Natural"],
     });
   });
 
   it.each([
     [{ version: 2, images: [] }],
-    [{ version: 1, images: [{ name: "Bad", file: "bad.gif", columns: 1, rows: 1 }] }],
-    [{ version: 1, images: [{ name: "Bad", file: "bad.png", columns: 0, rows: 1 }] }],
-    [{ version: 1, images: [{ name: "Bad", file: "../bad.png", columns: 1, rows: 1 }] }],
+    [{ version: 1, images: [{ name: "Bad", file: "bad.gif", columns: 1, rows: 1, rights: { creator: "Maker" }, ai: false, collection: ["Test"] }] }],
+    [{ version: 1, images: [{ name: "Bad", file: "bad.png", columns: 0, rows: 1, rights: { creator: "Maker" }, ai: false, collection: ["Test"] }] }],
+    [{ version: 1, images: [{ name: "Bad", file: "../bad.png", columns: 1, rows: 1, rights: { creator: "Maker" }, ai: false, collection: ["Test"] }] }],
+    [{ version: 1, images: [{ name: "Bad", file: "bad.png", columns: 1, rows: 1, rights: { creator: "" }, ai: false, collection: ["Test"] }] }],
+    [{ version: 1, images: [{ name: "Bad", file: "bad.png", columns: 1, rows: 1, rights: { creator: "Maker" }, ai: false, collection: [] }] }],
+    [{ version: 1, images: [{ name: "Bad", file: "bad.png", columns: 1, rows: 1, rights: { creator: "Maker" }, ai: false, collection: ["Test", "Test"] }] }],
   ])("rejects invalid manifest data", (value) => {
     expect(() => parseBuiltInManifest(value, manifestUrl)).toThrow();
   });
@@ -43,7 +49,7 @@ describe("built-in background manifest", () => {
   });
 });
 
-describe("built-in image configuration", () => {
+describe("public image configuration", () => {
   it.each([
     ["https://example.com/a.png", "image/png"],
     ["https://example.com/a.jpg", "image/jpeg"],
@@ -56,11 +62,19 @@ describe("built-in image configuration", () => {
   it("creates an exact column and row footprint", () => {
     const background = parseBuiltInManifest({
       version: 1,
-      images: [{ name: "Stone", file: "stone.webp", columns: 8, rows: 6 }],
+      images: [{ name: "Stone", file: "stone.webp", columns: 8, rows: 6, rights: { creator: "Maker" }, ai: false, collection: ["Interior"] }],
     }, manifestUrl).images[0];
     const config = configFromBuiltIn(background, { width: 2048, height: 1536 });
     expect(config).toMatchObject({
-      image: { width: 2048, height: 1536, mime: "image/webp" },
+      image: {
+        width: 2048,
+        height: 1536,
+        mime: "image/webp",
+        rights: { creator: "Maker" },
+        ai: false,
+        columns: 8,
+        rows: 6,
+      },
       grid: { dpi: 256, offset: { x: 0, y: 0 } },
       scale: { x: 1, y: 1 },
     });
@@ -70,7 +84,7 @@ describe("built-in image configuration", () => {
   it("does not apply scene DPI a second time for a 12 by 12 image", () => {
     const background = parseBuiltInManifest({
       version: 1,
-      images: [{ name: "Marble tiles", file: "marble.png", columns: 12, rows: 12 }],
+      images: [{ name: "Marble tiles", file: "marble.png", columns: 12, rows: 12, rights: { creator: "Maker" }, ai: false, collection: ["Interior"] }],
     }, manifestUrl).images[0];
     expect(configFromBuiltIn(background, { width: 1158, height: 1158 })).toMatchObject({
       grid: { dpi: 96.5 },
