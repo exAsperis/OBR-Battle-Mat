@@ -435,6 +435,20 @@
         "license": "CC0-1.0",
         "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
       }
+    },
+    {
+      "id": "whiteboard",
+      "name": "Whiteboard",
+      "file": "Whiteboard 16x16.jpg",
+      "columns": 16,
+      "rows": 16,
+      "ai": false,
+      "collection": ["Abstract", "Realistic"],
+      "rights": {
+        "creator": "ex Asperis",
+        "license": "CC0-1.0",
+        "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/"
+      }
     }
   ]
 }
