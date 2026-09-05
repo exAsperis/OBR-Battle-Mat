@@ -40,7 +40,7 @@ describe("BuiltInGallery", () => {
   it("shows the empty state", async () => {
     vi.mocked(fetchBuiltInManifest).mockResolvedValue({ version: 1, images: [] });
     render(<BuiltInGallery busy={false} onBack={vi.fn()} onSelect={vi.fn()} />);
-    expect(await screen.findByText("No public backgrounds are available yet.")).toBeTruthy();
+    expect(await screen.findByText("No built-in images are available yet.")).toBeTruthy();
   });
 
   it("filters by collection and can hide AI images", async () => {

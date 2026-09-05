@@ -25,7 +25,7 @@ vi.mock("@owlbear-rodeo/sdk", () => ({
 vi.mock("./hooks/useOwlbear", () => ({ useOwlbear: vi.fn() }));
 vi.mock("./hooks/useActionHeight", () => ({ useActionHeight: vi.fn() }));
 vi.mock("./components/BuiltInGallery", () => ({
-  BuiltInGallery: ({ onBack }: { onBack: () => void }) => <div><span>Public gallery</span><button onClick={onBack}>Back</button></div>,
+  BuiltInGallery: ({ onBack }: { onBack: () => void }) => <div><span>Built-in gallery</span><button onClick={onBack}>Back</button></div>,
 }));
 
 function state(role: "GM" | "PLAYER") {
@@ -41,25 +41,102 @@ describe("background source controls", () => {
     sdk.setMetadata.mockReset().mockResolvedValue(undefined);
   });
 
-  it("opens the public gallery and returns to both source buttons", () => {
+  it("shows the source heading and opens the built-in gallery", () => {
     render(<App />);
-    fireEvent.click(screen.getByRole("button", { name: "Public backgrounds" }));
-    expect(screen.getByText("Public gallery")).toBeTruthy();
+    expect(screen.getByText("New image from:")).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Built in" }));
+    expect(screen.getByText("Built-in gallery")).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "Back" }));
-    expect(screen.getByRole("button", { name: "My OBR maps" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "My OBR images" })).toBeTruthy();
   });
 
   it("continues to open the OBR map picker", async () => {
     render(<App />);
-    fireEvent.click(screen.getByRole("button", { name: "My OBR maps" }));
+    fireEvent.click(screen.getByRole("button", { name: "My OBR images" }));
     await waitFor(() => expect(sdk.downloadImages).toHaveBeenCalledWith(false, undefined, "MAP"));
   });
 
   it("does not expose background selection controls to players", () => {
     vi.mocked(useOwlbear).mockReturnValue(state("PLAYER"));
     render(<App />);
-    expect(screen.queryByRole("button", { name: "Public backgrounds" })).toBeNull();
-    expect(screen.queryByRole("button", { name: "My OBR maps" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Built in" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "My OBR images" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "URL" })).toBeNull();
+    expect(screen.queryByText("New image from:")).toBeNull();
+  });
+
+  it("shows the URL form and licensing notice, then cancels without updating metadata", () => {
+    render(<App />);
+    fireEvent.click(screen.getByRole("button", { name: "URL" }));
+    expect(screen.getByText(/properly licensed for your intended use/i)).toBeTruthy();
+    expect(screen.getByLabelText("Image URL")).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
+    expect(screen.getByRole("button", { name: "URL" })).toBeTruthy();
+    expect(sdk.setMetadata).not.toHaveBeenCalled();
+  });
+
+  it("rejects invalid URL form values without updating metadata", async () => {
+    render(<App />);
+    fireEvent.click(screen.getByRole("button", { name: "URL" }));
+    fireEvent.change(screen.getByLabelText("Image URL"), { target: { value: "https://example.com/image.gif" } });
+    expect((await screen.findByRole("alert")).textContent).toContain("PNG, JPEG, or WebP");
+    expect(screen.getByRole("button", { name: "Apply" }).hasAttribute("disabled")).toBe(true);
+    expect(sdk.setMetadata).not.toHaveBeenCalled();
+  });
+
+  it("explains when a previewable image is not CORS-compatible with Owlbear", async () => {
+    const OriginalImage = globalThis.Image;
+    class CorsBlockedImage {
+      naturalWidth = 0;
+      naturalHeight = 0;
+      crossOrigin: string | null = null;
+      src = "";
+      decode = vi.fn().mockRejectedValue(new Error("Network error"));
+    }
+    Object.defineProperty(globalThis, "Image", { configurable: true, value: CorsBlockedImage });
+    try {
+      render(<App />);
+      fireEvent.click(screen.getByRole("button", { name: "URL" }));
+      fireEvent.change(screen.getByLabelText("Image URL"), { target: { value: "https://example.com/blocked.png" } });
+      const alert = await screen.findByRole("alert");
+      expect(alert.textContent).toContain("does not allow Owlbear-compatible cross-origin image loading");
+      expect(alert.textContent).toContain("My OBR images");
+      expect(screen.getByRole("button", { name: "Apply" }).hasAttribute("disabled")).toBe(true);
+    } finally {
+      Object.defineProperty(globalThis, "Image", { configurable: true, value: OriginalImage });
+    }
+  });
+
+  it("loads a valid URL image and saves its grid footprint", async () => {
+    const OriginalImage = globalThis.Image;
+    class LoadedImage {
+      naturalWidth = 2000;
+      naturalHeight = 1000;
+      src = "";
+      decode = vi.fn().mockResolvedValue(undefined);
+    }
+    Object.defineProperty(globalThis, "Image", { configurable: true, value: LoadedImage });
+    try {
+      render(<App />);
+      fireEvent.click(screen.getByRole("button", { name: "URL" }));
+      fireEvent.change(screen.getByLabelText("Image URL"), { target: { value: "https://cdn.example.com/Stone%20Floor.webp" } });
+      fireEvent.change(screen.getByLabelText("Columns"), { target: { value: "10" } });
+      fireEvent.change(screen.getByLabelText("Rows"), { target: { value: "5" } });
+      const apply = screen.getByRole("button", { name: "Apply" });
+      await waitFor(() => expect(apply.hasAttribute("disabled")).toBe(false));
+      expect(screen.getByText("Compatible image · 2000 × 1000px")).toBeTruthy();
+      fireEvent.click(apply);
+      await waitFor(() => expect(sdk.setMetadata).toHaveBeenCalledTimes(1));
+      const metadata = sdk.setMetadata.mock.calls[0][0];
+      const saved = Object.values(metadata)[0] as Record<string, unknown>;
+      expect(saved).toMatchObject({
+        enabled: true,
+        image: { name: "Stone Floor", url: "https://cdn.example.com/Stone%20Floor.webp", width: 2000, height: 1000, columns: 10, rows: 5 },
+        grid: { dpi: 200 },
+      });
+    } finally {
+      Object.defineProperty(globalThis, "Image", { configurable: true, value: OriginalImage });
+    }
   });
 
   it("shows public image rights with complete tooltips", () => {

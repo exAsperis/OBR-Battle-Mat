@@ -25,7 +25,7 @@ export function BuiltInGallery({ busy, onBack, onSelect }: BuiltInGalleryProps) 
     } catch (cause) {
       if (current === request.current) {
         setImages([]);
-        setError(cause instanceof Error ? cause.message : "Unable to load public backgrounds.");
+        setError(cause instanceof Error ? cause.message : "Unable to load built-in images.");
       }
     } finally {
       if (current === request.current) setLoading(false);
@@ -54,11 +54,11 @@ export function BuiltInGallery({ busy, onBack, onSelect }: BuiltInGalleryProps) 
       <button type="button" className="secondary" disabled={busy} onClick={onBack}>← Back</button>
       <button type="button" className="secondary" disabled={busy || loading} onClick={() => void load()}>Refresh</button>
     </div>
-    {loading ? <div className="gallery-state"><div className="spinner" /><p>Loading public backgrounds…</p></div>
+    {loading ? <div className="gallery-state"><div className="spinner" /><p>Loading built-in images…</p></div>
       : error ? <div className="gallery-state"><p className="error-notice" role="alert">{error}</p><button type="button" className="primary" disabled={busy} onClick={() => void load()}>Try again</button></div>
-        : images.length === 0 ? <div className="gallery-state"><p>No public backgrounds are available yet.</p></div>
-          : filteredImages.length === 0 ? <div className="gallery-state"><p>No public backgrounds match these filters.</p></div>
-          : <div className="background-gallery" aria-label="Public backgrounds">
+        : images.length === 0 ? <div className="gallery-state"><p>No built-in images are available yet.</p></div>
+          : filteredImages.length === 0 ? <div className="gallery-state"><p>No built-in images match these filters.</p></div>
+          : <div className="background-gallery" aria-label="Built in">
             {filteredImages.map((image) => <button type="button" className="background-option" key={image.url} disabled={busy} onClick={() => onSelect(image)}>
               <span className="background-preview"><img src={image.url} alt="" loading="lazy" decoding="async" /></span>
               <span className="background-option-details">

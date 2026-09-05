@@ -5,7 +5,7 @@ OBR Battle Mat is an Owlbear Rodeo extension that repeats one GM-selected map im
 ## How it works
 
 - The GM-selected image and its grid, scale, and origin are stored in namespaced scene metadata.
-- GMs can choose an Owlbear Rodeo map asset or a public background maintained in this repository.
+- GMs can choose an Owlbear Rodeo image, a built-in image maintained in this repository, or an image at an absolute URL.
 - A manifest background page renders only `OBR.scene.local` image items on each client.
 - A fixed-size pool follows the camera by recycling tiles only after the center crosses a tile boundary.
 - Zoom never changes the pool size.
@@ -41,12 +41,12 @@ pnpm run build
 
 The pure pool tests verify bounded preset sizes, fixed logical coordinates, long-distance reassignment, and the nine-item update expected when a Medium pool moves one tile horizontally. Full acceptance testing also requires an Owlbear room to verify cross-client asset access, z-order beneath maps and grid, noninteraction, scene switching, and local-item behavior.
 
-## Managing public backgrounds
+## Managing built-in images
 
-Public images and their manually maintained catalog live in `public/backgrounds/`. To publish a background:
+Built-in images and their manually maintained catalog live in `public/backgrounds/`. To publish an image:
 
 1. Add a PNG, JPEG, or WebP image to `public/backgrounds/` or a subfolder beneath it.
-2. Add an entry to `public/backgrounds/manifest.json` with its display name, relative file path, columns, rows, rights information, AI disclosure, and one or more collections. `creator` is required; `license` and additional rights fields are optional:
+2. Add an entry to `public/backgrounds/manifest.json` with its display name, relative file path or absolute HTTP(S) URL, columns, rows, rights information, AI disclosure, and one or more collections. `creator` is required; `license` and additional rights fields are optional:
 
    ```json
    {
@@ -64,11 +64,11 @@ Public images and their manually maintained catalog live in `public/backgrounds/
    }
    ```
 
-3. Commit and push the image and manifest change to `main`, wait for the Azure Static Web Apps deployment, then use **Refresh** in the public gallery.
+3. Commit and push the image and manifest change to `main`, wait for the Azure Static Web Apps deployment, then use **Refresh** in the built-in gallery.
 
 Catalog order controls gallery order. Removing an entry hides it from the gallery, but scenes that already use it retain its URL. Keep the underlying image hosted while those scenes may still need it. When changing an image's pixels, use a new filename so clients do not reuse a cached copy.
 
-### Contributing a public background
+### Contributing a built-in image
 
 Contributions are welcome through pull requests:
 

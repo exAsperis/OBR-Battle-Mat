@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import {
   configFromBuiltIn,
+  configFromUrl,
   fetchBuiltInManifest,
   loadImageDimensions,
   mimeFromImageUrl,
@@ -10,7 +11,7 @@ import { backgroundMetadata, readBackgroundConfig } from "./sceneConfig";
 
 const manifestUrl = "https://obr-battle-mat.ex-asperis.com/backgrounds/manifest.json";
 
-describe("public background manifest", () => {
+describe("built-in image manifest", () => {
   it("parses entries in catalog order and resolves relative image URLs", () => {
     const result = parseBuiltInManifest({
       version: 1,
@@ -29,11 +30,20 @@ describe("public background manifest", () => {
     });
   });
 
+  it("accepts cross-origin absolute HTTP(S) image URLs", () => {
+    const result = parseBuiltInManifest({
+      version: 1,
+      images: [{ name: "Remote", file: "https://cdn.example.com/maps/remote.webp?rev=2", columns: 8, rows: 6, rights: { creator: "Maker" }, ai: false, collection: ["Remote"] }],
+    }, manifestUrl);
+    expect(result.images[0]).toMatchObject({ url: "https://cdn.example.com/maps/remote.webp?rev=2", mime: "image/webp" });
+  });
+
   it.each([
     [{ version: 2, images: [] }],
     [{ version: 1, images: [{ name: "Bad", file: "bad.gif", columns: 1, rows: 1, rights: { creator: "Maker" }, ai: false, collection: ["Test"] }] }],
     [{ version: 1, images: [{ name: "Bad", file: "bad.png", columns: 0, rows: 1, rights: { creator: "Maker" }, ai: false, collection: ["Test"] }] }],
     [{ version: 1, images: [{ name: "Bad", file: "../bad.png", columns: 1, rows: 1, rights: { creator: "Maker" }, ai: false, collection: ["Test"] }] }],
+    [{ version: 1, images: [{ name: "Bad", file: "ftp://example.com/bad.png", columns: 1, rows: 1, rights: { creator: "Maker" }, ai: false, collection: ["Test"] }] }],
     [{ version: 1, images: [{ name: "Bad", file: "bad.png", columns: 1, rows: 1, rights: { creator: "" }, ai: false, collection: ["Test"] }] }],
     [{ version: 1, images: [{ name: "Bad", file: "bad.png", columns: 1, rows: 1, rights: { creator: "Maker" }, ai: false, collection: [] }] }],
     [{ version: 1, images: [{ name: "Bad", file: "bad.png", columns: 1, rows: 1, rights: { creator: "Maker" }, ai: false, collection: ["Test", "Test"] }] }],
@@ -49,7 +59,7 @@ describe("public background manifest", () => {
   });
 });
 
-describe("public image configuration", () => {
+describe("image configuration", () => {
   it.each([
     ["https://example.com/a.png", "image/png"],
     ["https://example.com/a.jpg", "image/jpeg"],
@@ -92,6 +102,28 @@ describe("public image configuration", () => {
     });
   });
 
+  it("creates URL image configuration without unverified rights metadata", () => {
+    const config = configFromUrl({ url: "https://cdn.example.com/maps/Stone%20Floor.png?rev=4", columns: 10, rows: 5 }, { width: 2000, height: 1000 });
+    expect(config).toMatchObject({
+      enabled: true,
+      image: { name: "Stone Floor", url: "https://cdn.example.com/maps/Stone%20Floor.png?rev=4", mime: "image/png", width: 2000, height: 1000, columns: 10, rows: 5 },
+      grid: { dpi: 200 },
+      scale: { x: 1, y: 1 },
+    });
+    expect(config.image).not.toHaveProperty("rights");
+    expect(config.image).not.toHaveProperty("ai");
+  });
+
+  it.each([
+    [{ url: "not-a-url", columns: 1, rows: 1 }, "absolute image URL"],
+    [{ url: "data:image/png;base64,abc", columns: 1, rows: 1 }, "HTTP or HTTPS"],
+    [{ url: "https://example.com/image.gif", columns: 1, rows: 1 }, "PNG, JPEG, or WebP"],
+    [{ url: "https://example.com/image.png", columns: 0, rows: 1 }, "positive whole numbers"],
+    [{ url: "https://example.com/image.png", columns: 1, rows: 1.5 }, "positive whole numbers"],
+  ])("rejects invalid URL image input", (input, message) => {
+    expect(() => configFromUrl(input, { width: 100, height: 100 })).toThrow(message);
+  });
+
   it("discovers intrinsic browser image dimensions", async () => {
     const OriginalImage = globalThis.Image;
     class LoadedImage {
@@ -115,6 +147,23 @@ describe("public image configuration", () => {
     }
     Object.defineProperty(globalThis, "Image", { configurable: true, value: BrokenImage });
     await expect(loadImageDimensions("https://example.com/missing.webp")).rejects.toThrow("could not be loaded");
+    Object.defineProperty(globalThis, "Image", { configurable: true, value: OriginalImage });
+  });
+
+  it("requests an anonymous CORS image for Owlbear compatibility checks", async () => {
+    const OriginalImage = globalThis.Image;
+    let created: { crossOrigin: string | null } | undefined;
+    class LoadedImage {
+      naturalWidth = 512;
+      naturalHeight = 256;
+      crossOrigin: string | null = null;
+      src = "";
+      decode = vi.fn().mockResolvedValue(undefined);
+      constructor() { created = this; }
+    }
+    Object.defineProperty(globalThis, "Image", { configurable: true, value: LoadedImage });
+    await expect(loadImageDimensions("https://example.com/cors.webp", true)).resolves.toEqual({ width: 512, height: 256 });
+    expect(created?.crossOrigin).toBe("anonymous");
     Object.defineProperty(globalThis, "Image", { configurable: true, value: OriginalImage });
   });
 });
